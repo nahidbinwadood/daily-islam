@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>সহজ দ্বীন — Easy Deen</title>
+<meta name="description" content="আজকের নামাজের সময়, কুরআন, অজু-নামাজ শিক্ষা ও দোয়া, সহজ বাংলায় এবং সঠিক উৎসসহ।">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Anek+Bangla:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">মূল অংশে যান</a>
+
+<div class="sky" id="sky" data-sky="night">
+  <div class="stars" aria-hidden="true"></div>
+  <div class="orb" id="orb" aria-hidden="true"></div>
+  <div class="horizon" aria-hidden="true"></div>
+
+  <div class="proto">প্রোটোটাইপ: নামাজের সময় আপনার ডিভাইসে হিসাব করা, ইসলামিক ফাউন্ডেশনের সময়সূচির সাথে এখনো মেলানো হয়নি। বাংলা অর্থ নমুনা।</div>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="index.html" aria-label="সহজ দ্বীন, হোম">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="2"/><rect x="9" y="9" width="22" height="22" rx="2" transform="rotate(45 20 20)"/><circle cx="20" cy="20" r="4" fill="currentColor" stroke="none"/></svg>
+        <span><b>সহজ দ্বীন</b><small>Easy Deen</small></span>
+      </a>
+      <nav class="site-nav" aria-label="প্রধান">
+        <a href="quran.html">কুরআন</a>
+        <a href="wudu.html">অজু ও নামাজ</a>
+        <a href="#dua">দোয়া</a>
+        <a href="#times">নামাজের সময়</a>
+      </nav>
+      <div class="head-actions">
+        <div class="dd">
+          <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="ভাষা বাছাই"><i data-lucide="globe"></i><span class="dd-label">বাংলা</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <ul role="listbox" hidden>
+            <li><button type="button" aria-current="true" data-label="বাংলা">বাংলা</button></li>
+            <li><button type="button" disabled>English (শীঘ্রই)</button></li>
+            <li><button type="button" disabled>اردو (শীঘ্রই)</button></li>
+          </ul>
+        </div>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label="রাতের মোড চালু বা বন্ধ করুন"><i data-lucide="moon"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap hero" aria-labelledby="h">
+    <div>
+      <p class="salam">আসসালামু আলাইকুম</p>
+      <div class="dates" aria-label="আজকের তারিখ">
+        <span><i data-lucide="moon-star"></i><span id="dHijri"></span></span>
+        <span><i data-lucide="sun"></i><span id="dBangla"></span></span>
+        <span><i data-lucide="calendar"></i><span id="dEn"></span></span>
+      </div>
+      <h1 id="h">দ্বীন, সহজ করে।</h1>
+      <p class="lede">শুদ্ধ করে কুরআন পড়া, অজু ও নামাজ ধাপে ধাপে শেখা, আর প্রতিদিনের দোয়া। প্রতিটি লেখার সাথে তার উৎস, কোনো বিজ্ঞাপন নেই।</p>
+      <div class="cta">
+        <a class="btn mari" href="quran.html"><i data-lucide="book-open"></i>কুরআন পড়ুন</a>
+        <a class="btn glass" href="wudu.html"><i data-lucide="droplets"></i>অজু শিখুন</a>
+      </div>
+    </div>
+
+    <div class="glass next-card" aria-live="polite">
+      <div class="top">
+        <span class="label" id="nextLabel">পরবর্তী নামাজ</span>
+        <div class="dd" id="cityDd">
+          <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="শহর বাছাই"><i data-lucide="map-pin"></i><span class="dd-label">ঢাকা</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <ul role="listbox" hidden id="cityList"></ul>
+        </div>
+      </div>
+      <div class="name" id="nextName">—</div>
+      <div class="at" id="nextAt"></div>
+      <div class="countdown" aria-label="বাকি সময়">
+        <div><b id="cH">০</b><small>ঘণ্টা</small></div>
+        <div><b id="cM">০০</b><small>মিনিট</small></div>
+        <div><b id="cS">০০</b><small>সেকেন্ড</small></div>
+      </div>
+      <div class="dayline"><div class="track" id="track" role="img"></div></div>
+      <div class="foot">
+        <span><i data-lucide="sunrise"></i>সেহরি শেষ <b id="fSehri"></b></span>
+        <span><i data-lucide="sunset"></i>ইফতার <b id="fIftar"></b></span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<main id="main" class="wrap bento-wrap">
+  <div class="bento">
+    <section class="tile t-times" id="times" aria-labelledby="tt">
+      <div class="tile-head"><span class="ic"><i data-lucide="clock"></i></span><h2 id="tt">আজকের নামাজের সময়</h2><span class="more" id="cityName"></span></div>
+      <div class="ptable" id="ptable"></div>
+      <div class="pextra" id="pextra"></div>
+      <p class="hint">হানাফী মাযহাব অনুযায়ী আসর। ফজর ও ইশা ১৮° কোণে হিসাব করা।</p>
+    </section>
+
+    <section class="tile t-ayah" aria-labelledby="ta">
+      <div class="tile-head"><h2 id="ta">আজকের আয়াত</h2></div>
+      <div class="tb" id="aotd">
+        <p class="ar" lang="ar" dir="rtl">فَإِنَّ مَعَ الْعُسْرِ يُسْرًا ﴿٥﴾ إِنَّ مَعَ الْعُسْرِ يُسْرًا ﴿٦﴾</p>
+        <p class="pron">ফাইন্না মা'আল উসরি ইউসরা, ইন্না মা'আল উসরি ইউসরা</p>
+        <p class="mean">নিশ্চয়ই কষ্টের সাথেই রয়েছে স্বস্তি। নিশ্চয়ই কষ্টের সাথেই রয়েছে স্বস্তি।</p>
+        <div class="src"><span class="chip ref"><i data-lucide="book-marked"></i>সূরা আশ-শারহ ৯৪:৫-৬</span></div>
+      </div>
+      <div><button class="btn mari" type="button" data-play="aotd"><i data-lucide="play"></i>শুনুন</button></div>
+    </section>
+
+    <section class="tile t-dua" id="dua" aria-labelledby="td">
+      <div class="tile-head"><span class="ic"><i data-lucide="hand-heart"></i></span><h2 id="td">এখন কোন দোয়া দরকার?</h2></div>
+      <div class="chips" role="group" aria-label="পরিস্থিতি বাছাই" id="duaChips"></div>
+      <div class="tb" id="duaBox"></div>
+    </section>
+
+    <section class="tile t-quran" aria-labelledby="tq">
+      <div class="tile-head"><span class="ic"><i data-lucide="book-open"></i></span><h2 id="tq">ছোট সূরা দিয়ে শুরু করুন</h2></div>
+      <div class="surah-list">
+        <a href="quran.html#fatiha"><span class="star"><span>১</span></span><span class="nm"><b>আল-ফাতিহা</b><small>৭ আয়াত</small></span><span class="arn" lang="ar">الفاتحة</span></a>
+        <a href="quran.html#asr"><span class="star"><span>১০৩</span></span><span class="nm"><b>আল-আসর</b><small>৩ আয়াত</small></span><span class="arn" lang="ar">العصر</span></a>
+        <a href="quran.html#kawthar"><span class="star"><span>১০৮</span></span><span class="nm"><b>আল-কাওসার</b><small>৩ আয়াত</small></span><span class="arn" lang="ar">الكوثر</span></a>
+        <a href="quran.html#ikhlas"><span class="star"><span>১১২</span></span><span class="nm"><b>আল-ইখলাস</b><small>৪ আয়াত</small></span><span class="arn" lang="ar">الإخلاص</span></a>
+        <a href="quran.html#falaq"><span class="star"><span>১১৩</span></span><span class="nm"><b>আল-ফালাক</b><small>৫ আয়াত</small></span><span class="arn" lang="ar">الفلق</span></a>
+        <a href="quran.html#nas"><span class="star"><span>১১৪</span></span><span class="nm"><b>আন-নাস</b><small>৬ আয়াত</small></span><span class="arn" lang="ar">الناس</span></a>
+      </div>
+    </section>
+
+    <section class="tile t-wudu" aria-labelledby="tw">
+      <div class="tile-head"><span class="ic"><i data-lucide="droplets"></i></span><h2 id="tw">অজু শিখুন, ১০ ধাপে</h2><a class="more" href="wudu.html">শুরু করুন</a></div>
+      <p>প্রতিটি ধাপে কী করবেন, কতবার করবেন, আর সেটি ফরজ না সুন্নত। শেষে অজুর পরের দোয়া, সহীহ মুসলিম থেকে।</p>
+      <div class="steps-peek"><span><i data-lucide="circle-check" style="width:16px;height:16px"></i>৪টি ফরজ</span><span>৬টি সুন্নত</span><span>শেষে দোয়া</span></div>
+    </section>
+
+    <section class="tile t-jumua" aria-labelledby="tj">
+      <div class="tile-head"><span class="ic"><i data-lucide="calendar-heart"></i></span><h2 id="tj">জুমা</h2></div>
+      <div style="display:flex;align-items:flex-end;gap:14px"><span class="big-num" id="jDays">০</span><p id="jText" style="padding-bottom:8px"></p></div>
+      <p class="hint">জুমার দিনে সূরা আল-কাহফ পড়া সুন্নত, আর দরুদ বেশি বেশি পড়া।</p>
+    </section>
+  </div>
+
+  <div class="trust-row">
+    <div><i data-lucide="file-check-2"></i><div><b>প্রতিটি লেখার উৎস</b><p>আয়াত নম্বর, হাদীসের বই ও নম্বর, আর হাদীসের মান।</p></div></div>
+    <div><i data-lucide="users"></i><div><b>আলেমদের পর্যালোচনা</b><p>প্রকাশের আগে আলেমরা প্রতিটি লেখা যাচাই করবেন।</p></div></div>
+    <div><i data-lucide="ban"></i><div><b>বিজ্ঞাপন নেই</b><p>ইবাদতের সময় কোনো বিজ্ঞাপন বা পপ-আপ নেই।</p></div></div>
+    <div><i data-lucide="lock"></i><div><b>আপনার তথ্য আপনার</b><p>লোকেশন কোথাও পাঠানো হয় না, সময় ডিভাইসেই হিসাব হয়।</p></div></div>
+  </div>
+</main>
+
+<footer class="site-foot"><div class="wrap"><span>সহজ দ্বীন, Easy Deen</span><span>প্রোটোটাইপ, নভেম্বর ২০২৬</span></div></footer>
+
+<script>
+const DUAS = [
+  { k: 'home', icon: 'door-open', label: 'ঘর থেকে বের হওয়া',
+    ar: 'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
+    pr: 'বিসমিল্লাহি তাওয়াক্কালতু আলাল্লাহি, লা হাওলা ওয়ালা কুওয়াতা ইল্লা বিল্লাহ',
+    mn: 'আল্লাহর নামে বের হলাম, আল্লাহর উপর ভরসা করলাম। আল্লাহ ছাড়া কোনো শক্তি ও ক্ষমতা নেই।',
+    src: 'সুনান আবু দাউদ ৫০৯৫, জামে তিরমিযী ৩৪২৬', grade: ['sahih', 'সহীহ'] },
+  { k: 'eat', icon: 'utensils', label: 'খাওয়ার আগে',
+    ar: 'بِسْمِ اللَّهِ', pr: 'বিসমিল্লাহ', mn: 'আল্লাহর নামে (শুরু করছি)।',
+    src: 'সহীহ বুখারী ৫৩৭৬', grade: ['sahih', 'সহীহ'] },
+  { k: 'sleep', icon: 'moon', label: 'ঘুমানোর আগে',
+    ar: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا', pr: 'বিসমিকা আল্লাহুম্মা আমূতু ওয়া আহইয়া',
+    mn: 'হে আল্লাহ, আপনার নামেই আমি মরি (ঘুমাই) এবং জীবিত হই (জাগি)।',
+    src: 'সহীহ বুখারী ৬৩২৪', grade: ['sahih', 'সহীহ'] },
+  { k: 'study', icon: 'graduation-cap', label: 'পড়াশোনা ও পরীক্ষা',
+    ar: 'رَبِّ زِدْنِي عِلْمًا', pr: 'রাব্বি যিদনী ইলমা', mn: 'হে আমার প্রতিপালক, আমার জ্ঞান বাড়িয়ে দিন।',
+    src: 'সূরা ত্বা-হা ২০:১১৪', grade: ['ref', 'কুরআন'] },
+];
+const $ = (s) => document.querySelector(s);
+let city = 'dhaka';
+try { city = localStorage.getItem('ed-city') || 'dhaka'; } catch (e) {}
+
+function showDua(k) {
+  const d = DUAS.find((x) => x.k === k);
+  document.querySelectorAll('#duaChips button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
+  const box = $('#duaBox'); delete box.dataset.wrapped;
+  box.innerHTML = `<p class="ar" lang="ar" dir="rtl">${d.ar}</p><p class="pron">${d.pr}</p><p class="mean">${d.mn}</p>
+    <div class="src"><span class="chip ${d.grade[0]}"><i data-lucide="${d.grade[0] === 'sahih' ? 'circle-check' : 'book-marked'}"></i>${d.grade[1]}</span><span>${d.src}</span>
+    <button class="btn quiet" type="button" id="duaPlay" style="min-height:42px;margin-left:auto"><i data-lucide="play"></i>শুনুন</button></div>`;
+  box.querySelector('.ar').removeAttribute('data-wrapped');
+  wrapWords(box.parentElement); lucide.createIcons();
+  $('#duaPlay').addEventListener('click', () => playBlock(box));
+}
+
+function render() {
+  const [cname, lat, lng] = CITIES[city];
+  const t = prayerTimes(new Date(), lat, lng);
+  const s = dayState(t);
+  $('#sky').dataset.sky = new URLSearchParams(location.search).get('sky') || s.sky;   // ?sky=dawn|day|golden|dusk|night to preview
+  $('#cityName').textContent = cname;
+  $('#nextLabel').textContent = s.tomorrow ? 'আগামীকাল প্রথম নামাজ' : 'পরবর্তী নামাজ';
+  $('#nextName').textContent = NAMES[s.nextKey];
+  $('#nextAt').textContent = `শুরু ${fmt(t[s.nextKey])}`;
+  target = s.target; tick();
+  $('#fSehri').textContent = fmt(t.fajr - 1);
+  $('#fIftar').textContent = fmt(t.maghrib);
+
+  // orb: follows the sun between sunrise and sunset, moon at night
+  const n = nowMin(), orb = $('#orb');
+  const dayP = Math.min(1, Math.max(0, (n - t.sunrise) / (t.maghrib - t.sunrise)));
+  const night = s.sky === 'night';
+  orb.style.left = `calc(${night ? 78 : 8 + dayP * 80}% - 80px)`;
+  orb.style.top = night ? '18%' : `${62 - Math.sin(dayP * Math.PI) * 48}%`;
+
+  // day line (evenly spaced prayers; "now" sits between the two around it)
+  const step = 25, idx = s.curIdx;
+  let pos = idx < 0 ? 0 : idx >= 4 ? 100 : idx * step + ((n - t[ORDER[idx]]) / (t[ORDER[idx + 1]] - t[ORDER[idx]])) * step;
+  $('#track').innerHTML = `<div class="done" style="width:${pos}%"></div><div class="me" style="left:${pos}%">এখন</div>` +
+    ORDER.map((k, i) => `<div class="pt ${k === s.nextKey && !s.tomorrow ? 'next' : t[k] <= n ? 'past' : ''}" style="left:${i * step}%"><span>${NAMES[k]}<br>${fmt(t[k])}</span></div>`).join('');
+  $('#track').setAttribute('aria-label', `পরবর্তী নামাজ ${NAMES[s.nextKey]}, ${fmt(t[s.nextKey])}`);
+
+  // table: start–end ranges
+  const ends = { fajr: t.sunrise - 1, dhuhr: t.asr - 1, asr: t.maghrib - 1, maghrib: t.isha - 1, isha: t.fajr + 1440 - 1 };
+  const icons = { fajr: 'sunrise', dhuhr: 'sun', asr: 'sun-medium', maghrib: 'sunset', isha: 'moon' };
+  $('#ptable').innerHTML = ORDER.map((k, i) => {
+    const now = i === s.curIdx;
+    return `<div class="prow ${now ? 'now' : ''}"><span class="nm"><i data-lucide="${icons[k]}"></i>${NAMES[k]}${now ? ' <span class="tag">এখন</span>' : ''}</span><span class="rng">${fmt(t[k])} থেকে ${fmt(ends[k])}</span><span></span></div>`;
+  }).join('');
+  $('#pextra').innerHTML = `<div><small>সূর্যোদয়</small><b>${fmt(t.sunrise)}</b></div>
+    <div class="warn"><small>নিষিদ্ধ: সূর্যোদয়ের সময়</small><b>${fmt(t.sunrise)} থেকে ${fmt(t.sunrise + 15)}</b></div>
+    <div class="warn"><small>নিষিদ্ধ: সূর্যাস্তের আগে</small><b>${fmt(t.maghrib - 15)} থেকে ${fmt(t.maghrib)}</b></div>`;
+  lucide.createIcons();
+}
+
+// countdown ticks every second; the rest re-renders when the minute changes
+let target = 0, lastMin = -1;
+function tick() {
+  const secs = Math.max(0, Math.floor((target - nowMin()) * 60));
+  $('#cH').textContent = bn(Math.floor(secs / 3600));
+  $('#cM').textContent = bn(String(Math.floor(secs / 60) % 60).padStart(2, '0'));
+  $('#cS').textContent = bn(String(secs % 60).padStart(2, '0'));
+}
+
+function renderDates() {
+  $('#dHijri').textContent = hijriDate();
+  $('#dBangla').textContent = bnDate();
+  $('#dEn').textContent = enDate();
+  const day = new Date().getDay();               // Friday = 5
+  const left = (5 - day + 7) % 7;
+  $('#jDays').textContent = bn(left);
+  $('#jText').textContent = left === 0 ? 'আজ জুমার দিন। সূরা আল-কাহফ পড়ুন।' : `দিন পর জুমা`;
+  if (left === 0) $('#jDays').textContent = 'আজ';
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  $('#cityList').innerHTML = Object.entries(CITIES).map(([k, c]) =>
+    `<li><button type="button" data-value="${k}" data-label="${c[0]}" ${k === city ? 'aria-current="true"' : ''}>${c[0]}</button></li>`).join('');
+  $('#cityDd .dd-label').textContent = CITIES[city][0];
+  initDropdowns();
+  $('#cityDd').addEventListener('pick', (e) => { city = e.detail; try { localStorage.setItem('ed-city', city); } catch (x) {} render(); });
+  $('#duaChips').innerHTML = DUAS.map((d) => `<button type="button" data-k="${d.k}" aria-pressed="false"><i data-lucide="${d.icon}"></i>${d.label}</button>`).join('');
+  $('#duaChips').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showDua(b.dataset.k); });
+  const h = new Date().getHours();
+  showDua(h >= 21 || h < 4 ? 'sleep' : h >= 6 && h < 10 ? 'home' : 'study');
+  renderDates(); render();
+  setInterval(() => { const m = new Date().getMinutes(); if (m !== lastMin) { lastMin = m; render(); } else tick(); }, 1000);
+  wrapWords();
+  document.querySelectorAll('[data-play]').forEach((b) => b.addEventListener('click', () => playBlock(document.getElementById(b.dataset.play))));
+});
+</script>
+</body>
+</html>

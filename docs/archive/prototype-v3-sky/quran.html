@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>কুরআন — সহজ দ্বীন</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Anek+Bangla:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .reader { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; padding: 24px 28px; max-width: 1220px; }
+  .surah-head { position: relative; overflow: hidden; display: grid; gap: 14px; padding: 28px 30px; border-radius: 30px; color: #fff; isolation: isolate;
+    background: linear-gradient(135deg, #0A1A2F 0%, #13305A 55%, #0B7366 130%); }
+  .surah-head::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .7;
+    background-image: radial-gradient(1.5px 1.5px at 12% 30%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 30% 70%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 48% 20%, #fff 50%, transparent 51%), radial-gradient(1.5px 1.5px at 66% 60%, #fff 50%, transparent 51%), radial-gradient(1px 1px at 84% 25%, #fff 50%, transparent 51%);
+    background-size: 360px 200px; }
+  .surah-head::after { content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 50%; z-index: -1;
+    background: radial-gradient(circle, rgb(245 184 65 / .45) 0%, rgb(245 184 65 / 0) 65%); }
+  .surah-head .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .surah-head h1 { font-size: clamp(32px, 3.6vw, 46px); color: #fff; font-weight: 800; }
+  .surah-head .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .surah-head .meta span { padding: 3px 12px; border-radius: 999px; background: rgb(255 255 255 / .12); border: 1px solid rgb(255 255 255 / .18); font-size: 15px; }
+  .surah-head .ar-name { font-family: var(--arabic); font-size: 40px; color: var(--marigold); line-height: 1.3; }
+  .surah-head .about { color: #C9D6E5; max-width: 62ch; font-size: 16.5px; }
+  .surah-head .dd > button { background: rgb(255 255 255 / .12); color: #fff; border-color: rgb(255 255 255 / .3); }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 18px 0; }
+  .seg { display: inline-flex; background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px; padding: 4px; }
+  .seg button { min-height: 40px; padding: 0 16px; border: 0; background: none; border-radius: 999px; font: 500 16px var(--body); color: var(--ink-soft); display: inline-flex; gap: 6px; align-items: center; }
+  .seg button[aria-pressed="true"] { background: var(--teal); color: var(--on-teal); }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 16px; border: 1.5px solid var(--line); border-radius: 999px; font-size: 16px; background: var(--surface); }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--teal); }
+  .bism { text-align: center; font-family: var(--arabic); font-size: clamp(28px, 3vw, 36px); padding: 6px 0 16px; color: var(--teal); }
+  .ayahs { display: grid; gap: 14px; }
+  .ayah { padding: 18px 24px 22px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 26px; transition: border-color .2s, box-shadow .2s; }
+  .ayah .head { display: flex; align-items: center; gap: 4px; }
+  .ayah .head .acts { margin-left: auto; display: flex; gap: 2px; }
+  .ayah.active { border-color: var(--teal-bright); box-shadow: 0 0 0 5px var(--teal-tint), var(--glow); }
+  .ayah.active .star { color: var(--marigold); }
+  .mushaf { display: none; padding: 34px 30px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 26px; font-family: var(--arabic); font-size: clamp(28px, 3.2vw, 38px); line-height: 2.4; text-align: justify; text-align-last: center; }
+  .mushaf .end { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; font-size: .55em; color: var(--teal); border: 2px solid currentColor; border-radius: 50%; margin: 0 4px; vertical-align: middle; font-family: var(--body); font-weight: 700; }
+  .mode-mushaf .mushaf { display: block; }
+  .mode-mushaf .ayahs, .mode-mushaf .layer-tools, .mode-mushaf .bism { display: none; }
+  aside.tafsir { position: sticky; top: 96px; align-self: start; display: grid; gap: 14px; padding: 0 0 22px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 28px; max-height: calc(100vh - 210px); overflow: auto; }
+  aside.tafsir .thead { display: flex; align-items: center; gap: 10px; padding: 18px 22px; background: linear-gradient(90deg, var(--teal-tint), transparent); color: var(--teal); }
+  aside.tafsir h2 { font-size: 22px; color: var(--teal); }
+  aside.tafsir > :not(.thead) { margin-inline: 22px; }
+  aside.tafsir .ar { font-family: var(--arabic); font-size: 28px; line-height: 2; text-align: right; }
+  aside.tafsir .body { color: var(--ink); font-size: 17px; display: grid; gap: 10px; }
+  aside.tafsir .tclose { display: none; }
+  .player { position: fixed; left: 248px; right: 0; bottom: 0; z-index: 20; display: flex; align-items: center; gap: 14px; padding: 12px 28px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgb(10 26 47 / .92); backdrop-filter: blur(16px); color: #fff; border-top: 1px solid rgb(255 255 255 / .08); }
+  .player .play { width: 56px; height: 56px; border-radius: 50%; padding: 0; background: var(--marigold); color: var(--on-marigold); box-shadow: 0 0 24px rgb(245 184 65 / .45); }
+  .player .now { display: grid; line-height: 1.35; min-width: 0; }
+  .player .now b { font-size: 16px; }
+  .player .now span { font-size: 14px; color: #9DADC0; }
+  .player .bar { flex: 1; height: 4px; border-radius: 4px; background: rgb(255 255 255 / .15); overflow: hidden; min-width: 40px; }
+  .player .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--teal-bright), var(--marigold)); transition: width .3s; }
+  .player .icon-btn { color: #B8C7D9; }
+  .player .icon-btn:hover { background: rgb(255 255 255 / .1); color: #fff; }
+  .player .icon-btn[aria-pressed="true"] { background: var(--marigold); color: var(--on-marigold); }
+  .player .dd > button { background: transparent; color: #fff; border-color: rgb(255 255 255 / .3); }
+  main { padding-bottom: 110px; }
+  @media (max-width: 1100px) {
+    .reader { grid-template-columns: minmax(0, 1fr); }
+    aside.tafsir { position: fixed; inset: auto 0 0 0; top: auto; max-height: 70vh; border-radius: 26px 26px 0 0; z-index: 40; box-shadow: 0 -10px 40px rgb(0 0 0 / .25); }
+    aside.tafsir[hidden] { display: none !important; }
+    aside.tafsir .tclose { display: inline-grid; }
+  }
+  @media (min-width: 1101px) { aside.tafsir[hidden] { display: grid !important; } }
+  @media (max-width: 860px) {
+    .reader { padding: 16px; }
+    .surah-head { padding: 22px; border-radius: 24px; }
+    .player { left: 0; bottom: 58px; padding: 8px 16px; }
+    .player .hide-sm { display: none; }
+    .topbar .dd .dd-label { display: none; }
+  }
+</style>
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">মূল অংশে যান</a>
+<div class="app">
+  <nav class="side" aria-label="প্রধান">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><rect x="9" y="9" width="22" height="22" rx="2"/><rect x="9" y="9" width="22" height="22" rx="2" transform="rotate(45 20 20)"/><circle cx="20" cy="20" r="4" fill="currentColor" stroke="none"/></svg><b>সহজ দ্বীন</b></a>
+    <a class="nav-item" href="index.html"><i data-lucide="sun"></i>আজ</a>
+    <a class="nav-item" href="quran.html" aria-current="page"><i data-lucide="book-open"></i>কুরআন</a>
+    <a class="nav-item" href="wudu.html"><i data-lucide="droplets"></i>নামাজ ও অজু</a>
+    <a class="nav-item" href="index.html#dua"><i data-lucide="hand-heart"></i>দোয়া ও আমল</a>
+    <a class="nav-item" href="#" aria-disabled="true"><i data-lucide="layout-grid"></i>আরও<span class="soon">শীঘ্রই</span></a>
+    <div class="spacer"></div>
+    <button class="nav-item" type="button" data-theme-toggle><i data-lucide="moon"></i>রাতের মোড</button>
+  </nav>
+
+  <div>
+    <div class="proto">প্রোটোটাইপ: আরবি পাঠ আসল। বাংলা অর্থ ও তাফসীর নমুনা, লাইসেন্সকৃত অনুবাদ পরে যুক্ত হবে। অডিও অনুকরণ করা।</div>
+    <header class="topbar">
+      <label class="search"><i data-lucide="search"></i><span class="sr">খুঁজুন</span><input type="search" id="q" placeholder="সূরা বা শব্দ খুঁজুন, যেমন: ইখলাস"></label>
+      <div class="right">
+        <div class="dd" id="sizeDd">
+          <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="লেখার আকার"><i data-lucide="type"></i><span class="dd-label">মাঝারি</span><i data-lucide="chevron-down" class="chev"></i></button>
+          <ul role="listbox" hidden>
+            <li><button type="button" data-value="16px" data-label="ছোট">ছোট</button></li>
+            <li><button type="button" data-value="18px" data-label="মাঝারি" aria-current="true">মাঝারি</button></li>
+            <li><button type="button" data-value="21px" data-label="বড়">বড়</button></li>
+            <li><button type="button" data-value="24px" data-label="অনেক বড়">অনেক বড়</button></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="reader">
+      <div id="readerCol">
+        <div class="surah-head">
+          <div class="row">
+            <div>
+              <h1 id="sName"></h1>
+              <div class="meta" id="sMeta"></div>
+            </div>
+            <span class="ar-name" lang="ar" dir="rtl" id="sAr"></span>
+          </div>
+          <p class="about" id="sAbout"></p>
+          <div class="dd" id="surahDd" style="justify-self:start">
+            <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="সূরা বদলান"><i data-lucide="list"></i><span class="dd-label">সূরা বদলান</span><i data-lucide="chevron-down" class="chev"></i></button>
+            <ul role="listbox" hidden id="surahList" style="left:0;right:auto"></ul>
+          </div>
+        </div>
+
+        <div class="tools">
+          <div class="seg" role="group" aria-label="পড়ার ধরন">
+            <button type="button" aria-pressed="true" data-mode="ayah"><i data-lucide="rows-3"></i>আয়াত ধরে</button>
+            <button type="button" aria-pressed="false" data-mode="mushaf"><i data-lucide="book"></i>মুসহাফ পাতা</button>
+          </div>
+          <label class="toggle layer-tools"><input type="checkbox" id="showPron" checked>উচ্চারণ</label>
+          <label class="toggle layer-tools"><input type="checkbox" id="showMean" checked>অর্থ</label>
+        </div>
+
+        <p class="bism" lang="ar" dir="rtl" id="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+        <div class="ayahs" id="ayahs"></div>
+        <div class="mushaf" id="mushaf" lang="ar" dir="rtl"></div>
+      </div>
+
+      <aside class="tafsir" id="tafsir" aria-live="polite" hidden>
+        <div class="thead"><i data-lucide="book-text"></i><h2 id="tTitle">তাফসীর</h2>
+          <button class="icon-btn tclose" type="button" id="tClose" aria-label="তাফসীর বন্ধ করুন" style="margin-left:auto"><i data-lucide="x"></i></button></div>
+        <p class="ar" id="tAr" lang="ar" dir="rtl"></p>
+        <div class="body" id="tBody"></div>
+        <div class="src"><span class="chip plain"><i data-lucide="info"></i>নমুনা ব্যাখ্যা। চূড়ান্ত তাফসীর লাইসেন্সকৃত উৎস থেকে আসবে।</span></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn quiet" type="button" id="tPrev" style="flex:1"><i data-lucide="chevron-left"></i>আগের</button>
+          <button class="btn quiet" type="button" id="tNext" style="flex:1">পরের<i data-lucide="chevron-right"></i></button>
+        </div>
+      </aside>
+    </main>
+
+    <div class="player" role="region" aria-label="অডিও প্লেয়ার">
+      <button class="btn play" type="button" id="playAll" aria-label="পুরো সূরা শুনুন"><i data-lucide="play" class="ico-lg"></i></button>
+      <div class="now"><b id="nowLine">পুরো সূরা শুনুন</b><span>ক্বারী বাছাই শীঘ্রই</span></div>
+      <div class="bar hide-sm" aria-hidden="true"><i id="prog"></i></div>
+      <button class="icon-btn hide-sm" type="button" id="repeatBtn" aria-pressed="false" aria-label="প্রতিটি আয়াত ৩ বার"><i data-lucide="repeat"></i></button>
+      <div class="dd hide-sm">
+        <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="গতি"><span class="dd-label">১×</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <ul role="listbox" hidden style="top:auto;bottom:calc(100% + 8px);min-width:120px">
+          <li><button type="button" data-label="০.৭৫×">০.৭৫×</button></li>
+          <li><button type="button" data-label="১×" aria-current="true">১×</button></li>
+          <li><button type="button" data-label="১.২৫×">১.২৫×</button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="প্রধান">
+  <a href="index.html"><i data-lucide="sun"></i>আজ</a>
+  <a href="quran.html" aria-current="page"><i data-lucide="book-open"></i>কুরআন</a>
+  <a href="wudu.html"><i data-lucide="droplets"></i>নামাজ</a>
+  <a href="index.html#dua"><i data-lucide="hand-heart"></i>দোয়া</a>
+  <a href="#" aria-disabled="true"><i data-lucide="layout-grid"></i>আরও</a>
+</nav>
+
+<script>
+// Arabic text: real (Hafs). Bangla meaning and notes: prototype samples, not a licensed translation.
+const SURAHS = {
+  fatiha: { n: 1, name: 'আল-ফাতিহা', ar: 'الفاتحة', place: 'মাক্কী', mean: 'সূচনা', bism: false,
+    about: 'কুরআনের প্রথম সূরা। প্রতিটি নামাজের প্রতিটি রাকাতে পড়া হয়।',
+    ayat: [
+      ['بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ', 'বিসমিল্লাহির রাহমানির রাহীম', 'পরম করুণাময়, অতি দয়ালু আল্লাহর নামে।', 'প্রতিটি ভালো কাজ আল্লাহর নাম নিয়ে শুরু করার শিক্ষা। "রাহমান" ও "রাহীম" দুটিই আল্লাহর দয়া বোঝায়।'],
+      ['الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ', 'আলহামদু লিল্লাহি রাব্বিল আলামীন', 'সকল প্রশংসা আল্লাহর, যিনি সৃষ্টিজগতের প্রতিপালক।', '"রব" অর্থ যিনি সৃষ্টি করেন, লালন-পালন করেন ও পরিচালনা করেন। "আলামীন" অর্থ সমস্ত জগৎ।'],
+      ['الرَّحْمَٰنِ الرَّحِيمِ', 'আর-রাহমানির রাহীম', 'যিনি পরম করুণাময়, অতি দয়ালু।', 'প্রতিপালনের কথার পরই দয়ার কথা: আল্লাহর প্রতিপালন দয়ায় ভরা।'],
+      ['مَالِكِ يَوْمِ الدِّينِ', 'মালিকি ইয়াওমিদ্দীন', 'যিনি বিচার দিবসের মালিক।', 'দয়ার পাশাপাশি জবাবদিহিতার কথা। বিচারের দিন সব ক্ষমতা কেবল আল্লাহর।'],
+      ['إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ', 'ইয়্যাকা না\'বুদু ওয়া ইয়্যাকা নাসতাঈন', 'আমরা শুধু আপনারই ইবাদত করি এবং শুধু আপনারই কাছে সাহায্য চাই।', 'এখান থেকে বান্দা সরাসরি আল্লাহকে সম্বোধন করে।'],
+      ['اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ', 'ইহদিনাস সিরাতাল মুসতাকীম', 'আমাদের সরল পথ দেখান।', 'প্রতিটি রাকাতে এই দোয়া করা হয়, কারণ সঠিক পথই মানুষের সবচেয়ে বড় প্রয়োজন।'],
+      ['صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ', 'সিরাতাল্লাযীনা আন\'আমতা আলাইহিম, গাইরিল মাগদূবি আলাইহিম ওয়ালাদ দোয়াল্লীন', 'তাদের পথ, যাদের আপনি অনুগ্রহ করেছেন; তাদের পথ নয়, যারা ক্রোধের শিকার হয়েছে এবং যারা পথভ্রষ্ট হয়েছে।', 'সরল পথ কোনটি, তা স্পষ্ট করা হয়েছে: অনুগ্রহপ্রাপ্তদের পথ।'],
+    ] },
+  asr: { n: 103, name: 'আল-আসর', ar: 'العصر', place: 'মাক্কী', mean: 'সময়', bism: true,
+    about: 'মাত্র তিন আয়াতে সফলতার চারটি শর্ত: ঈমান, সৎকাজ, সত্যের উপদেশ আর ধৈর্যের উপদেশ।',
+    ayat: [
+      ['وَالْعَصْرِ', 'ওয়াল আসর', 'সময়ের শপথ,', 'আল্লাহ সময়ের শপথ করেছেন, যা জীবনের সবচেয়ে মূল্যবান সম্পদ।'],
+      ['إِنَّ الْإِنسَانَ لَفِي خُسْرٍ', 'ইন্নাল ইনসানা লাফী খুসর', 'নিশ্চয়ই মানুষ ক্ষতির মধ্যে আছে,', 'সময় চলে যাচ্ছে, তাই ভালো কাজ ছাড়া প্রতিটি মানুষ ক্ষতিতে আছে।'],
+      ['إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ', 'ইল্লাল্লাযীনা আমানূ ওয়া আমিলুস সালিহাতি ওয়া তাওয়াসাও বিল হাক্কি ওয়া তাওয়াসাও বিস সাবর', 'তবে তারা নয়, যারা ঈমান এনেছে, সৎকাজ করেছে, পরস্পরকে সত্যের উপদেশ দিয়েছে এবং ধৈর্যের উপদেশ দিয়েছে।', 'ক্ষতি থেকে বাঁচার চারটি শর্ত, যার দুটি নিজের জন্য আর দুটি অন্যদের জন্য।'],
+    ] },
+  kawthar: { n: 108, name: 'আল-কাওসার', ar: 'الكوثر', place: 'মাক্কী', mean: 'প্রাচুর্য', bism: true,
+    about: 'কুরআনের সবচেয়ে ছোট সূরা। নবী ﷺ-কে দেওয়া বিপুল কল্যাণের কথা।',
+    ayat: [
+      ['إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ', 'ইন্না আ\'তাইনা কাল কাওসার', 'নিশ্চয়ই আমি আপনাকে কাওসার দান করেছি।', '"কাওসার" অর্থ বিপুল কল্যাণ। জান্নাতের একটি নহরের নামও কাওসার।'],
+      ['فَصَلِّ لِرَبِّكَ وَانْحَرْ', 'ফাসাল্লি লিরাব্বিকা ওয়ানহার', 'সুতরাং আপনার প্রতিপালকের উদ্দেশে নামাজ পড়ুন এবং কুরবানি করুন।', 'নেয়ামতের শুকরিয়া হলো নামাজ ও কুরবানি, শুধু আল্লাহর জন্য।'],
+      ['إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ', 'ইন্না শানিআকা হুওয়াল আবতার', 'নিশ্চয়ই আপনার প্রতি বিদ্বেষ পোষণকারীই নির্বংশ।', 'যারা নবী ﷺ-কে "নির্বংশ" বলে কটাক্ষ করত, তাদের জবাব।'],
+    ] },
+  ikhlas: { n: 112, name: 'আল-ইখলাস', ar: 'الإخلاص', place: 'মাক্কী', mean: 'একনিষ্ঠতা', bism: true,
+    about: 'আল্লাহর একত্বের সবচেয়ে স্পষ্ট বর্ণনা। হাদীসে এসেছে, এই সূরা কুরআনের এক-তৃতীয়াংশের সমান (সহীহ বুখারী ৫০১৫)।',
+    ayat: [
+      ['قُلْ هُوَ اللَّهُ أَحَدٌ', 'কুল হুওয়াল্লাহু আহাদ', 'বলুন, তিনি আল্লাহ, এক ও অদ্বিতীয়।', 'আল্লাহ এক, তাঁর কোনো অংশীদার নেই।'],
+      ['اللَّهُ الصَّمَدُ', 'আল্লাহুস সামাদ', 'আল্লাহ কারও মুখাপেক্ষী নন, সবাই তাঁর মুখাপেক্ষী।', '"সামাদ" অর্থ যাঁর কাছে সবাই প্রয়োজন নিয়ে আসে, আর তিনি কারও প্রয়োজন রাখেন না।'],
+      ['لَمْ يَلِدْ وَلَمْ يُولَدْ', 'লাম ইয়ালিদ ওয়ালাম ইউলাদ', 'তিনি কাউকে জন্ম দেননি এবং তাঁকেও জন্ম দেওয়া হয়নি।', 'আল্লাহর কোনো সন্তান নেই, আর তিনি কারও থেকে জন্ম নেননি।'],
+      ['وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ', 'ওয়ালাম ইয়াকুল্লাহু কুফুওয়ান আহাদ', 'আর তাঁর সমতুল্য কেউ নেই।', 'কোনো কিছুই আল্লাহর মতো নয়।'],
+    ] },
+  falaq: { n: 113, name: 'আল-ফালাক', ar: 'الفلق', place: 'মাক্কী', mean: 'ভোর', bism: true,
+    about: 'বাইরের ক্ষতি থেকে আল্লাহর আশ্রয় চাওয়ার সূরা। সকাল-সন্ধ্যায় ও ঘুমানোর আগে পড়া হয়।',
+    ayat: [
+      ['قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ', 'কুল আউযু বিরাব্বিল ফালাক', 'বলুন, আমি আশ্রয় চাই ভোরের প্রতিপালকের কাছে,', 'যিনি রাতের অন্ধকার ভেদ করে ভোর আনেন, তিনিই রক্ষা করতে পারেন।'],
+      ['مِن شَرِّ مَا خَلَقَ', 'মিন শাররি মা খালাক', 'তিনি যা সৃষ্টি করেছেন তার অনিষ্ট থেকে,', 'সব ধরনের ক্ষতি থেকে আশ্রয়।'],
+      ['وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ', 'ওয়া মিন শাররি গাসিকিন ইযা ওয়াকাব', 'আর রাতের অন্ধকারের অনিষ্ট থেকে, যখন তা গভীর হয়,', 'রাতের অন্ধকারে যে ক্ষতি লুকিয়ে থাকে।'],
+      ['وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ', 'ওয়া মিন শাররিন নাফফাসাতি ফিল উকাদ', 'আর গিরায় ফুঁ দেওয়া জাদুকারিণীদের অনিষ্ট থেকে,', 'জাদু ও তার ক্ষতি থেকে আশ্রয়।'],
+      ['وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ', 'ওয়া মিন শাররি হাসিদিন ইযা হাসাদ', 'আর হিংসুকের অনিষ্ট থেকে, যখন সে হিংসা করে।', 'হিংসা থেকে জন্ম নেওয়া ক্ষতি থেকে আশ্রয়।'],
+    ] },
+  nas: { n: 114, name: 'আন-নাস', ar: 'الناس', place: 'মাক্কী', mean: 'মানুষ', bism: true,
+    about: 'কুরআনের শেষ সূরা। ভেতরের কুমন্ত্রণা থেকে আল্লাহর আশ্রয় চাওয়ার সূরা।',
+    ayat: [
+      ['قُلْ أَعُوذُ بِرَبِّ النَّاسِ', 'কুল আউযু বিরাব্বিন নাস', 'বলুন, আমি আশ্রয় চাই মানুষের প্রতিপালকের কাছে,', 'আল্লাহর তিনটি গুণ দিয়ে আশ্রয় চাওয়া: রব, মালিক ও ইলাহ।'],
+      ['مَلِكِ النَّاسِ', 'মালিকিন নাস', 'মানুষের অধিপতির কাছে,', 'সব মানুষের প্রকৃত অধিপতি আল্লাহ।'],
+      ['إِلَٰهِ النَّاسِ', 'ইলাহিন নাস', 'মানুষের ইলাহের কাছে,', 'একমাত্র তিনিই ইবাদতের যোগ্য।'],
+      ['مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ', 'মিন শাররিল ওয়াসওয়াসিল খান্নাস', 'আত্মগোপনকারী কুমন্ত্রণাদাতার অনিষ্ট থেকে,', 'যে কুমন্ত্রণা দেয় আর আল্লাহর স্মরণে পিছিয়ে যায়।'],
+      ['الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ', 'আল্লাযী ইউওয়াসউইসু ফী সুদূরিন নাস', 'যে মানুষের অন্তরে কুমন্ত্রণা দেয়,', 'কুমন্ত্রণা আসে অন্তরে, তাই আশ্রয়ও চাইতে হয় অন্তর দিয়ে।'],
+      ['مِنَ الْجِنَّةِ وَالنَّاسِ', 'মিনাল জিন্নাতি ওয়ান নাস', 'জিন ও মানুষের মধ্য থেকে।', 'কুমন্ত্রণাদাতা জিনও হতে পারে, মানুষও হতে পারে।'],
+    ] },
+};
+
+const $ = (s) => document.querySelector(s);
+let key = 'fatiha', current = 0, repeat = false;
+const S = () => SURAHS[key];
+
+function render() {
+  const s = S();
+  $('#sName').textContent = `সূরা ${s.name}`;
+  $('#sAr').textContent = `سُورَةُ ${s.ar}`;
+  $('#sMeta').innerHTML = `<span>সূরা ${bn(s.n)}</span><span>${s.place}</span><span>${bn(s.ayat.length)} আয়াত</span><span>অর্থ: ${s.mean}</span>`;
+  $('#sAbout').textContent = s.about;
+  $('#bism').hidden = !s.bism;
+  document.title = `সূরা ${s.name} — সহজ দ্বীন`;
+  $('#ayahs').innerHTML = s.ayat.map((a, i) => `
+    <article class="tb ayah" id="a${i}" data-i="${i}" aria-label="আয়াত ${bn(i + 1)}">
+      <div class="head">
+        <span class="star" aria-hidden="true"><span>${bn(i + 1)}</span></span>
+        <div class="acts">
+          <button class="icon-btn" type="button" data-act="play" aria-label="আয়াত ${bn(i + 1)} শুনুন"><i data-lucide="play"></i></button>
+          <button class="icon-btn" type="button" data-act="tafsir" aria-label="আয়াত ${bn(i + 1)} এর তাফসীর"><i data-lucide="book-text"></i></button>
+          <button class="icon-btn" type="button" data-act="mark" aria-pressed="false" aria-label="বুকমার্ক"><i data-lucide="bookmark"></i></button>
+          <button class="icon-btn" type="button" data-act="share" aria-label="শেয়ার করুন"><i data-lucide="share-2"></i></button>
+        </div>
+      </div>
+      <p class="ar" lang="ar" dir="rtl">${a[0]}</p>
+      <p class="pron">${a[1]}</p>
+      <p class="mean">${a[2]}</p>
+      <div class="src"><span class="chip ref"><i data-lucide="book-marked"></i>${s.name} ${bn(s.n)}:${bn(i + 1)}</span><span>নমুনা অনুবাদ</span></div>
+    </article>`).join('');
+  $('#mushaf').innerHTML = s.ayat.map((a, i) => `${a[0]} <span class="end" aria-label="আয়াত ${bn(i + 1)}">${bn(i + 1)}</span>`).join(' ');
+  $('#surahList').innerHTML = Object.entries(SURAHS).map(([k, v]) =>
+    `<li><button type="button" data-value="${k}" data-label="সূরা বদলান" ${k === key ? 'aria-current="true"' : ''}>${bn(v.n)}. ${v.name}</button></li>`).join('');
+  wrapWords(); lucide.createIcons();
+  current = 0; $('#prog').style.width = '0';
+  if (matchMedia('(min-width: 1101px)').matches) showTafsir(0); else $('#tafsir').hidden = true;
+}
+
+function showTafsir(i) {
+  const s = S(); current = i;
+  document.querySelectorAll('.ayah').forEach((el) => el.classList.toggle('active', +el.dataset.i === i));
+  $('#tTitle').textContent = `তাফসীর, আয়াত ${bn(i + 1)}`;
+  $('#tAr').textContent = s.ayat[i][0];
+  $('#tBody').innerHTML = `<p><b>অর্থ:</b> ${s.ayat[i][2]}</p><p>${s.ayat[i][3]}</p>`;
+  $('#tPrev').disabled = i === 0; $('#tNext').disabled = i === s.ayat.length - 1;
+  $('#tafsir').hidden = false;
+}
+
+function playFrom(i, all) {
+  const s = S();
+  if (i >= s.ayat.length) { setPlaying(false); $('#nowLine').textContent = 'সূরা শেষ হয়েছে'; return; }
+  const el = $('#a' + i);
+  showTafsir(i);
+  el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+  $('#nowLine').textContent = `সূরা ${s.name}, আয়াত ${bn(i + 1)}`;
+  $('#prog').style.width = `${((i + 1) / s.ayat.length) * 100}%`;
+  setPlaying(true);
+  let times = repeat ? 3 : 1;
+  const once = () => playBlock(el, () => { if (--times > 0) return once(); if (all) playFrom(i + 1, true); else setPlaying(false); });
+  once();
+}
+function setPlaying(on) {
+  const b = $('#playAll');
+  b.innerHTML = `<i data-lucide="${on ? 'pause' : 'play'}" class="ico-lg"></i>`;
+  b.setAttribute('aria-label', on ? 'থামান' : 'পুরো সূরা শুনুন');
+  b.dataset.on = on ? '1' : '';
+  lucide.createIcons();
+}
+function go() { const k = location.hash.slice(1); key = SURAHS[k] ? k : 'fatiha'; stopAudio(); setPlaying(false); render(); }
+
+window.addEventListener('DOMContentLoaded', () => {
+  go(); initDropdowns();
+  window.addEventListener('hashchange', go);
+  $('#surahDd').addEventListener('pick', (e) => { location.hash = e.detail; });
+  $('#ayahs').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-act]'); if (!btn) return;
+    const i = +btn.closest('.ayah').dataset.i;
+    if (btn.dataset.act === 'play') playFrom(i, false);
+    if (btn.dataset.act === 'tafsir') showTafsir(i);
+    if (btn.dataset.act === 'mark') btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+  });
+  $('#playAll').addEventListener('click', () => { if ($('#playAll').dataset.on) { stopAudio(); setPlaying(false); $('#nowLine').textContent = 'থামানো হয়েছে'; } else playFrom(0, true); });
+  $('#repeatBtn').addEventListener('click', (e) => { repeat = !repeat; e.currentTarget.setAttribute('aria-pressed', String(repeat)); });
+  $('#tPrev').addEventListener('click', () => showTafsir(Math.max(0, current - 1)));
+  $('#tNext').addEventListener('click', () => showTafsir(Math.min(S().ayat.length - 1, current + 1)));
+  $('#tClose').addEventListener('click', () => { $('#tafsir').hidden = true; });
+  $('#showPron').addEventListener('change', (e) => $('#ayahs').classList.toggle('hide-pron', !e.target.checked));
+  $('#showMean').addEventListener('change', (e) => $('#ayahs').classList.toggle('hide-mean', !e.target.checked));
+  document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-mode]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    $('#readerCol').classList.toggle('mode-mushaf', b.dataset.mode === 'mushaf');
+  }));
+  $('#sizeDd').addEventListener('pick', (e) => { document.body.style.fontSize = e.detail; });
+  $('#q').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const v = e.target.value.trim();
+    const hit = Object.entries(SURAHS).find(([k, s]) => s.name.includes(v) || k.includes(v.toLowerCase()) || String(s.n) === v);
+    if (hit) location.hash = hit[0];
+  });
+  document.querySelectorAll('[aria-disabled="true"]').forEach((a) => a.addEventListener('click', (e) => e.preventDefault()));
+});
+</script>
+</body>
+</html>

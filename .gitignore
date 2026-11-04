@@ -1,0 +1,4 @@
+# browser-test screenshots and logs
+.playwright-mcp/
+# local Claude Code settings
+.claude/settings.local.json

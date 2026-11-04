@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Islam — আজকের নামাজ, কুরআন ও দোয়া</title>
+<meta name="description" content="আজকের নামাজের সময়, কুরআন তিলাওয়াত ও অনুবাদ, কুরআনের দোয়া। প্রতিটি লেখার সাথে তার উৎস।">
+<meta name="theme-color" content="#1D4433">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://api.quran.com">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+<script src="app.js" defer></script>
+<script src="home.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">মূল লেখায় যান</a>
+
+<header class="topbar" id="topbar">
+  <div class="bar wrap">
+    <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><path d="M20 10.5 29.5 20 20 29.5 10.5 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>
+      <span>Daily Islam</span>
+    </a>
+    <nav class="primary" id="primary" aria-label="প্রধান বিভাগ">
+      <a href="quran.html">কুরআন</a>
+      <a href="#hadith">হাদিস</a>
+      <a href="#learn">শিক্ষা ও নামাজ</a>
+      <a href="#dua">দোয়া ও যিকির</a>
+      <a href="#guides">গাইড</a>
+      <a href="#tools">টুলস</a>
+    </nav>
+    <div class="bar-actions">
+      <button class="icon-btn" type="button" id="openSearch" aria-label="সূরা খুঁজুন"><i data-lucide="search"></i></button>
+      <a class="icon-btn" href="quran.html?view=saved" aria-label="আমার সংরক্ষণ"><i data-lucide="bookmark"></i></a>
+      <button class="icon-btn menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="primary" aria-label="মেনু খুলুন"><i data-lucide="menu"></i></button>
+    </div>
+  </div>
+</header>
+
+<section class="cover" id="top" aria-labelledby="nextH">
+  <div class="almanac wrap">
+    <div>
+      <p class="hijri"><span id="dHijri"></span></p>
+      <p class="civil"><span id="dBangla"></span><span id="dEn"></span></p>
+      <h1 class="next-h" id="nextH">&nbsp;</h1>
+      <p class="next-left" id="nextLeft">&nbsp;</p>
+      <div class="place">
+        <div class="dd" id="cityDd">
+          <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="শহর বাছাই করুন">
+            <i data-lucide="map-pin"></i><span class="dd-label">ঢাকা</span><i data-lucide="chevron-down" class="chev"></i>
+          </button>
+          <ul role="listbox" hidden id="cityList"></ul>
+        </div>
+        <p class="method">আপনার ডিভাইসে হিসাব করা সময়: করাচি পদ্ধতি (ফজর ও ইশা ১৮°), হানাফি আসর। ইসলামিক ফাউন্ডেশনের সময়সূচির সাথে এখনো মেলানো হয়নি, মসজিদের সময় দেখে নিন।</p>
+      </div>
+    </div>
+    <ol class="timetable" id="timetable" aria-label="আজকের নামাজের সময়"></ol>
+  </div>
+
+  <div class="ruler wrap" aria-hidden="true">
+    <div class="track" id="track"><div class="needle" id="needle"></div></div>
+    <div class="hours"><span>রাত ১২টা</span><span>ভোর ৬টা</span><span>দুপুর ১২টা</span><span>সন্ধ্যা ৬টা</span><span>রাত ১২টা</span></div>
+  </div>
+</section>
+
+<main id="main">
+
+  <section class="sec" id="quran" aria-labelledby="qH">
+    <div class="wrap q-grid">
+      <div>
+        <h2 class="sec-h" id="qH">আজকের আয়াত</h2>
+        <figure class="ayah-feature" id="ayahDay">
+          <p class="loading">আয়াত আনা হচ্ছে…</p>
+        </figure>
+      </div>
+      <aside class="q-side" aria-label="কুরআন পড়া">
+        <a class="resume" id="resume" href="quran.html" hidden>
+          <small>যেখানে থেমেছিলেন</small>
+          <strong id="resumeName"></strong>
+        </a>
+        <h3 class="side-h">যেকোনো সূরা দিয়ে শুরু করুন</h3>
+        <ul class="shortlist" id="shortlist"><li class="loading">সূরার তালিকা আনা হচ্ছে…</li></ul>
+        <a class="link side-more" href="quran.html">১১৪টি সূরার পুরো সূচি</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec" id="hadith" aria-labelledby="hH">
+    <div class="wrap h-grid">
+      <div>
+        <h2 class="sec-h" id="hH">হাদিসের গ্রন্থাগার</h2>
+        <p class="sec-intro">প্রতিটি হাদিসের সাথে থাকবে গ্রন্থ, অধ্যায় ও নম্বর, আর কোন মুহাদ্দিস কী মান দিয়েছেন তাঁর নামসহ। মতভেদ থাকলে প্রত্যেকের মত আলাদা করে দেখানো হবে।</p>
+        <div class="specimen" aria-label="হাদিসের সূত্র যেভাবে দেখানো হবে">
+          নমুনা কাঠামো, কোনো হাদিস নয়
+          <dl>
+            <dt>গ্রন্থ</dt><dd>সংকলনের নাম, খণ্ড ও অধ্যায়</dd>
+            <dt>নম্বর</dt><dd>হাদিস নম্বর, অন্য নম্বরপদ্ধতিসহ</dd>
+            <dt>মান</dt><dd>সহিহ, হাসান বা দাঈফ, যিনি মান দিয়েছেন তাঁর নাম ও উৎস</dd>
+            <dt>বর্ণনাকারী</dt><dd>রাবির নাম, পরিচিতির পাতার লিংক</dd>
+          </dl>
+        </div>
+        <p class="h-note">আলেমদের যাচাই শেষ না হওয়া পর্যন্ত প্রোটোটাইপে কোনো হাদিসের লেখা রাখা হয়নি।</p>
+      </div>
+      <div>
+        <ul class="shelf" aria-label="প্রথম ধাপের আটটি সংকলন">
+          <li class="spine" style="--c:#1F3B2D;height:15.5rem"><b>সহিহ বুখারি</b><small>ইমাম বুখারি</small></li>
+          <li class="spine" style="--c:#5B2A26;height:15rem"><b>সহিহ মুসলিম</b><small>ইমাম মুসলিম</small></li>
+          <li class="spine" style="--c:#273548;height:14rem"><b>সুনানে আবু দাউদ</b><small>ইমাম আবু দাউদ</small></li>
+          <li class="spine" style="--c:#5E4A24;height:14.5rem"><b>জামে তিরমিজি</b><small>ইমাম তিরমিজি</small></li>
+          <li class="spine" style="--c:#2C4637;height:13.5rem"><b>সুনানে নাসায়ি</b><small>ইমাম নাসায়ি</small></li>
+          <li class="spine" style="--c:#4A2A2E;height:13rem"><b>সুনানে ইবনে মাজাহ</b><small>ইমাম ইবনে মাজাহ</small></li>
+          <li class="spine" style="--c:#2B3A4C;height:12.5rem"><b>মুয়াত্তা মালিক</b><small>ইমাম মালিক</small></li>
+          <li class="spine" style="--c:#5A4626;height:16rem"><b>মুসনাদে আহমাদ</b><small>ইমাম আহমাদ</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="learn" aria-labelledby="lH">
+    <div class="wrap">
+      <h2 class="sec-h" id="lH">শূন্য থেকে কুরআন পড়া</h2>
+      <p class="sec-intro">ছোট ছোট ধাপ, নিজের গতিতে। অগ্রগতি শুধু আপনিই দেখবেন।</p>
+      <ol class="path">
+        <li><h3>হরফ চেনা</h3><p>আরবি ২৯টি হরফ, প্রতিটির উচ্চারণ শুনে।</p></li>
+        <li><h3>হরকত</h3><p>যবর, যের, পেশ, সুকুন ও তানবীন।</p></li>
+        <li><h3>মিলিয়ে পড়া</h3><p>দুই-তিন হরফ জুড়ে শব্দ।</p></li>
+        <li><h3>ছোট সূরা</h3><p>আয়াত ধরে ধরে, তিলাওয়াতের সাথে মিলিয়ে।</p></li>
+        <li><h3>তাজবিদ</h3><p>মাখরাজ, গুন্নাহ, মাদ্দ ও ওয়াকফের নিয়ম।</p></li>
+      </ol>
+      <ul class="tracks" aria-label="অন্য শিক্ষাপথ">
+        <li><h3><i data-lucide="footprints"></i>নামাজ ধাপে ধাপে</h3><p>প্রতিটি ভঙ্গি, যা পড়তে হয় তার অর্থ ও তিলাওয়াত।</p><span class="tag">তৈরি হচ্ছে</span></li>
+        <li><h3><i data-lucide="droplets"></i>অজু, গোসল, তায়াম্মুম</h3><p>ছবিসহ ধাপ, মাযহাবভেদে পার্থক্য আলাদা করে।</p><span class="tag">তৈরি হচ্ছে</span></li>
+        <li><h3><i data-lucide="library"></i>হাদিসের পরিভাষা</h3><p>সহিহ, হাসান, দাঈফ বলতে কী বোঝায়।</p><span class="tag">তৈরি হচ্ছে</span></li>
+        <li><h3><i data-lucide="landmark"></i>সীরাত</h3><p>রাসুলুল্লাহ ﷺ-এর জীবনী, সূত্রসহ।</p><span class="tag">তৈরি হচ্ছে</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec dua" id="dua" aria-labelledby="dH">
+    <div class="wrap">
+      <h2 class="sec-h" id="dH">দোয়া ও যিকির</h2>
+      <div class="tabs" role="tablist" aria-label="দোয়ার ধরন">
+        <button role="tab" type="button" aria-selected="true" aria-controls="duaList" id="tabQ">কুরআনের দোয়া</button>
+        <button role="tab" type="button" aria-selected="false" aria-disabled="true">সকালের যিকির</button>
+        <button role="tab" type="button" aria-selected="false" aria-disabled="true">সন্ধ্যার যিকির</button>
+        <button role="tab" type="button" aria-selected="false" aria-disabled="true">নামাজের পর</button>
+      </div>
+      <p class="tab-note">হাদিসভিত্তিক যিকিরগুলো সূত্র ও মান যাচাইয়ের পর যুক্ত হবে। এখানে আপাতত কুরআনের আয়াতে থাকা দোয়া।</p>
+      <ul class="duas" id="duaList" role="tabpanel" aria-labelledby="tabQ"><li class="loading">দোয়া আনা হচ্ছে…</li></ul>
+    </div>
+  </section>
+
+  <section class="sec" id="tools" aria-labelledby="tH">
+    <div class="wrap tg-grid">
+      <div>
+        <h2 class="sec-h" id="tH">তাসবিহ ও অন্যান্য</h2>
+        <div class="tasbih">
+          <button class="bead" type="button" id="bead" aria-describedby="beadHint"><b id="count">০</b><small id="beadOf">৩৩-এর মধ্যে</small></button>
+          <div class="tasbih-side">
+            <p id="beadHint">ছুঁয়ে গুনুন। ৩৩ হলে ফোন একবার কাঁপবে আর নতুন চক্র শুরু হবে।</p>
+            <p class="round" id="rounds"></p>
+            <button class="btn btn-quiet" type="button" id="beadReset"><i data-lucide="rotate-ccw"></i>শূন্য থেকে</button>
+          </div>
+        </div>
+        <ul class="tool-list">
+          <li><i data-lucide="clock"></i><a href="#top">আজকের নামাজের সময়</a></li>
+          <li><i data-lucide="compass"></i><span class="t">কিবলার দিক</span><span class="tag">তৈরি হচ্ছে</span></li>
+          <li><i data-lucide="calculator"></i><span class="t">যাকাত হিসাব</span><span class="tag">তৈরি হচ্ছে</span></li>
+          <li><i data-lucide="calendar-days"></i><span class="t">হিজরি ক্যালেন্ডার</span><span class="tag">তৈরি হচ্ছে</span></li>
+        </ul>
+      </div>
+      <div id="guides">
+        <h2 class="sec-h">পড়ার মতো গাইড</h2>
+        <ul class="guides">
+          <li><h3>প্রথমবার নামাজ শিখছেন?</h3><p>কোথা থেকে শুরু করবেন, কী মুখস্থ করবেন, কোন ভুলগুলো সবচেয়ে বেশি হয়।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
+          <li><h3>জানাজার নামাজ, ধাপে ধাপে</h3><p>নিয়ত থেকে সালাম পর্যন্ত, চার তাকবিরে কী পড়তে হয়।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
+          <li><h3>যাকাত কার ওপর ফরজ</h3><p>নিসাব, এক বছর পূর্ণ হওয়া, আর কোন সম্পদ হিসাবে আসে।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="back">
+  <div class="wrap back-grid">
+    <div>
+      <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><path d="M20 10.5 29.5 20 20 29.5 10.5 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>
+        <span>Daily Islam</span>
+      </a>
+      <p style="margin-top:var(--s3)">কোনো বিজ্ঞাপন নেই, কারও ইবাদতের তুলনা নেই। আপনার সংরক্ষণ ও অগ্রগতি এই ব্রাউজারেই থাকে।</p>
+    </div>
+    <div>
+      <h2>লেখার উৎস</h2>
+      <p>কুরআনের আরবি লেখা, বাংলা অনুবাদ, শব্দার্থ, তাফসির ও তিলাওয়াত: <a href="https://quran.com" rel="noopener">Quran.com</a> (Quran Foundation)।</p>
+      <p>তিলাওয়াত: মিশারি রাশিদ আল-আফাসি।</p>
+    </div>
+    <div>
+      <h2>এটি একটি প্রোটোটাইপ</h2>
+      <p>নামাজের সময় ডিভাইসে হিসাব করা, হিজরি তারিখ উম্মুল কুরা হিসাবে আনুমানিক। বাংলাদেশে চাঁদ দেখার ওপর তারিখ এক দিন পিছিয়ে থাকতে পারে।</p>
+    </div>
+  </div>
+</footer>
+
+<dialog class="search" id="searchDlg" aria-labelledby="searchH">
+  <div class="search-head">
+    <h2 id="searchH" style="font-size:var(--t-md)">সূরা খুঁজুন</h2>
+    <button class="icon-btn" type="button" data-close aria-label="বন্ধ করুন"><i data-lucide="x"></i></button>
+  </div>
+  <form action="quran.html" method="get">
+    <label class="sr" for="q">সূরার নাম, অর্থ বা নম্বর</label>
+    <input class="field" id="q" name="q" type="search" placeholder="যেমন: ইয়াসিন, Mulk, ৬৭" autocomplete="off" required>
+    <button class="btn btn-solid" type="submit"><i data-lucide="search"></i>খুঁজুন</button>
+  </form>
+  <p class="search-hint">এখন শুধু সূরা খোঁজা যায়। পুরো কুরআন, হাদিস ও দোয়ায় খোঁজার সুবিধা পরে আসবে।</p>
+</dialog>
+</body>
+</html>
