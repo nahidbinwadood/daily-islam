@@ -2,3 +2,8 @@
 .playwright-mcp/
 # local Claude Code settings
 .claude/settings.local.json
+
+# raw scraped Play reviews: personal data, kept local only (repo is public)
+docs/research/data/raw/play-reviews/
+# PDF build intermediate
+docs/research/_pdf/report.html
