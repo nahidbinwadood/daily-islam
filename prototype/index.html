@@ -3,217 +3,363 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Daily Islam — আজকের নামাজ, কুরআন ও দোয়া</title>
-<meta name="description" content="আজকের নামাজের সময়, কুরআন তিলাওয়াত ও অনুবাদ, কুরআনের দোয়া। প্রতিটি লেখার সাথে তার উৎস।">
-<meta name="theme-color" content="#1D4433">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Daily Islam — নামাজের সময়, কুরআন, দোয়া ও হাদিস, সূত্রসহ</title>
+<meta name="description" content="আজকের নামাজের সময়, কুরআন তিলাওয়াত ও অনুবাদ, দোয়া আর হাদিস। প্রতিটি লেখার সাথে তার উৎস, কোনো বিজ্ঞাপন নেই।">
+<meta name="theme-color" content="#0A6650">
 <link rel="preconnect" href="https://api.quran.com">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="home.css?v=10">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-<script src="app.js" defer></script>
-<script src="home.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">মূল লেখায় যান</a>
 
-<header class="topbar" id="topbar">
-  <div class="bar wrap">
+<header class="top" id="top">
+  <div class="wrap top__bar">
     <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
-      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><path d="M20 10.5 29.5 20 20 29.5 10.5 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>
+      <span class="mark__seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 4 36 20 20 36 4 20Z"/><path d="M20 11 29 20 20 29 11 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg></span>
       <span>Daily Islam</span>
     </a>
-    <nav class="primary" id="primary" aria-label="প্রধান বিভাগ">
+    <nav class="top__nav" id="topNav" aria-label="প্রধান বিভাগ">
       <a href="quran.html">কুরআন</a>
-      <a href="#hadith">হাদিস</a>
-      <a href="#learn">শিক্ষা ও নামাজ</a>
-      <a href="#dua">দোয়া ও যিকির</a>
-      <a href="#guides">গাইড</a>
-      <a href="#tools">টুলস</a>
+      <a href="#today">হাদিস</a>
+      <a href="learn.html">নামাজ শিক্ষা</a>
+      <a href="#today">দোয়া ও যিকির</a>
+      <a href="#contents">সব বিভাগ</a>
     </nav>
-    <div class="bar-actions">
-      <button class="icon-btn" type="button" id="openSearch" aria-label="সূরা খুঁজুন"><i data-lucide="search"></i></button>
-      <a class="icon-btn" href="quran.html?view=saved" aria-label="আমার সংরক্ষণ"><i data-lucide="bookmark"></i></a>
-      <button class="icon-btn menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="primary" aria-label="মেনু খুলুন"><i data-lucide="menu"></i></button>
+    <div class="top__act">
+      <a class="chip" href="#now" id="topNext" aria-label="পরের নামাজ"><i data-lucide="clock"></i><b id="topNextName">&nbsp;</b><span id="topNextAt"></span></a>
+      <button class="icon-btn" type="button" data-open-search aria-label="খুঁজুন"><i data-lucide="search"></i></button>
+      <a class="btn btn--solid btn--sm top__cta" href="quran.html"><i data-lucide="book-open"></i>কুরআন পড়ুন</a>
+      <button class="icon-btn top__menu" type="button" id="menuBtn" aria-expanded="false" aria-controls="topNav" aria-label="মেনু খুলুন"><i data-lucide="menu"></i></button>
     </div>
   </div>
 </header>
 
-<section class="cover" id="top" aria-labelledby="nextH">
-  <div class="almanac wrap">
-    <div>
-      <p class="hijri"><span id="dHijri"></span></p>
-      <p class="civil"><span id="dBangla"></span><span id="dEn"></span></p>
-      <h1 class="next-h" id="nextH">&nbsp;</h1>
-      <p class="next-left" id="nextLeft">&nbsp;</p>
-      <div class="place">
-        <div class="dd" id="cityDd">
-          <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="শহর বাছাই করুন">
-            <i data-lucide="map-pin"></i><span class="dd-label">ঢাকা</span><i data-lucide="chevron-down" class="chev"></i>
-          </button>
-          <ul role="listbox" hidden id="cityList"></ul>
-        </div>
-        <p class="method">আপনার ডিভাইসে হিসাব করা সময়: করাচি পদ্ধতি (ফজর ও ইশা ১৮°), হানাফি আসর। ইসলামিক ফাউন্ডেশনের সময়সূচির সাথে এখনো মেলানো হয়নি, মসজিদের সময় দেখে নিন।</p>
-      </div>
-    </div>
-    <ol class="timetable" id="timetable" aria-label="আজকের নামাজের সময়"></ol>
-  </div>
-
-  <div class="ruler wrap" aria-hidden="true">
-    <div class="track" id="track"><div class="needle" id="needle"></div></div>
-    <div class="hours"><span>রাত ১২টা</span><span>ভোর ৬টা</span><span>দুপুর ১২টা</span><span>সন্ধ্যা ৬টা</span><span>রাত ১২টা</span></div>
-  </div>
-</section>
-
 <main id="main">
 
-  <section class="sec" id="quran" aria-labelledby="qH">
-    <div class="wrap q-grid">
-      <div>
-        <h2 class="sec-h" id="qH">আজকের আয়াত</h2>
-        <figure class="ayah-feature" id="ayahDay">
-          <p class="loading">আয়াত আনা হচ্ছে…</p>
-        </figure>
-      </div>
-      <aside class="q-side" aria-label="কুরআন পড়া">
-        <a class="resume" id="resume" href="quran.html" hidden>
-          <small>যেখানে থেমেছিলেন</small>
-          <strong id="resumeName"></strong>
-        </a>
-        <h3 class="side-h">যেকোনো সূরা দিয়ে শুরু করুন</h3>
-        <ul class="shortlist" id="shortlist"><li class="loading">সূরার তালিকা আনা হচ্ছে…</li></ul>
-        <a class="link side-more" href="quran.html">১১৪টি সূরার পুরো সূচি</a>
-      </aside>
-    </div>
-  </section>
+  <!-- HERO: a real photograph for each prayer period, following today's computed times. Stand-ins from Wikimedia Commons (Quality images): fajr foggy winter morning, sunrise and maghrib Tanguar Haor, dhuhr Choto Sona Mosque, asr farm near Rajshahi, isha Tipu Sultan Mosque, Kolkata -->
+  <section class="sky" id="now" data-period="dhuhr" aria-labelledby="heroH">
+    <div class="sky__bg" aria-hidden="true"><div class="sky__photos" id="photos"></div></div>
 
-  <section class="sec" id="hadith" aria-labelledby="hH">
-    <div class="wrap h-grid">
-      <div>
-        <h2 class="sec-h" id="hH">হাদিসের গ্রন্থাগার</h2>
-        <p class="sec-intro">প্রতিটি হাদিসের সাথে থাকবে গ্রন্থ, অধ্যায় ও নম্বর, আর কোন মুহাদ্দিস কী মান দিয়েছেন তাঁর নামসহ। মতভেদ থাকলে প্রত্যেকের মত আলাদা করে দেখানো হবে।</p>
-        <div class="specimen" aria-label="হাদিসের সূত্র যেভাবে দেখানো হবে">
-          নমুনা কাঠামো, কোনো হাদিস নয়
-          <dl>
-            <dt>গ্রন্থ</dt><dd>সংকলনের নাম, খণ্ড ও অধ্যায়</dd>
-            <dt>নম্বর</dt><dd>হাদিস নম্বর, অন্য নম্বরপদ্ধতিসহ</dd>
-            <dt>মান</dt><dd>সহিহ, হাসান বা দাঈফ, যিনি মান দিয়েছেন তাঁর নাম ও উৎস</dd>
-            <dt>বর্ণনাকারী</dt><dd>রাবির নাম, পরিচিতির পাতার লিংক</dd>
-          </dl>
+    <div class="wrap sky__grid">
+      <div class="sky__copy">
+        <!-- shown after a tap on another waqt: says it is only a picture, and offers one clear way back -->
+        <div class="sky__preview" id="previewNote" hidden>
+          <p class="sky__preview-txt" aria-live="polite"><img id="previewIc" src="icons/fajr.png" alt="" width="32" height="32"><span><b id="previewText"></b><small id="previewLive"></small></span></p>
+          <button class="btn btn--gold" type="button" id="liveBtn"><i data-lucide="rotate-ccw"></i>এখনকার সময়ে ফিরুন</button>
         </div>
-        <p class="h-note">আলেমদের যাচাই শেষ না হওয়া পর্যন্ত প্রোটোটাইপে কোনো হাদিসের লেখা রাখা হয়নি।</p>
+        <p class="sky__now"><img id="nowIc" src="icons/dhuhr.png" alt="" width="28" height="28"><span id="nowLine">&nbsp;</span></p>
+        <p class="sky__date"><b id="dHijri"></b> (আনুমানিক), <span id="dBangla"></span></p>
+        <h1 class="sky__h" id="heroH">সময়মতো নামাজ, অর্থসহ কুরআন, প্রতিদিনের দোয়া</h1>
+        <p class="sky__sub">আপনার শহরের ওয়াক্ত আর কাউন্টডাউন, তিনটি বাংলা অনুবাদে কুরআন পড়া ও শোনা, প্রতিদিন একটি আয়াত ও দোয়া। সব বাংলায়, সূত্রসহ, বিজ্ঞাপন ছাড়া।</p>
+        <div class="sky__ctas">
+          <a class="btn btn--solid" href="quran.html"><img src="icons/quran.png" alt="" width="26" height="26">কুরআন পড়া শুরু করুন</a>
+          <a class="btn btn--ghost" href="#today">আজকের আয়াত পড়ুন</a>
+        </div>
       </div>
-      <div>
-        <ul class="shelf" aria-label="প্রথম ধাপের আটটি সংকলন">
-          <li class="spine" style="--c:#1F3B2D;height:15.5rem"><b>সহিহ বুখারি</b><small>ইমাম বুখারি</small></li>
-          <li class="spine" style="--c:#5B2A26;height:15rem"><b>সহিহ মুসলিম</b><small>ইমাম মুসলিম</small></li>
-          <li class="spine" style="--c:#273548;height:14rem"><b>সুনানে আবু দাউদ</b><small>ইমাম আবু দাউদ</small></li>
-          <li class="spine" style="--c:#5E4A24;height:14.5rem"><b>জামে তিরমিজি</b><small>ইমাম তিরমিজি</small></li>
-          <li class="spine" style="--c:#2C4637;height:13.5rem"><b>সুনানে নাসায়ি</b><small>ইমাম নাসায়ি</small></li>
-          <li class="spine" style="--c:#4A2A2E;height:13rem"><b>সুনানে ইবনে মাজাহ</b><small>ইমাম ইবনে মাজাহ</small></li>
-          <li class="spine" style="--c:#2B3A4C;height:12.5rem"><b>মুয়াত্তা মালিক</b><small>ইমাম মালিক</small></li>
-          <li class="spine" style="--c:#5A4626;height:16rem"><b>মুসনাদে আহমাদ</b><small>ইমাম আহমাদ</small></li>
-        </ul>
-      </div>
+
     </div>
+
+
+    <!-- the prayer panel, at the foot of the hero: the whole hero fits one screen -->
+    <div class="wrap sky__railwrap">
+        <div class="panel">
+          <div class="next" aria-labelledby="nextLbl" role="group">
+            <div class="next__top">
+              <p class="next__lbl" id="nextLbl">পরের নামাজ</p>
+              <div class="dd" id="cityDd">
+                <button type="button" aria-expanded="false" aria-label="শহর বাছাই করুন"><i data-lucide="map-pin"></i><span class="dd-label">ঢাকা</span><i data-lucide="chevron-down" class="chev"></i></button>
+                <ul hidden id="cityList"></ul>
+              </div>
+            </div>
+            <div class="next__row"><p class="next__name"><img id="nextIc" src="icons/asr.png" alt="" width="52" height="52"><span><b id="nextName">&nbsp;</b><small id="nextAt"></small></span></p><p class="next__count"><span id="countdown">&nbsp;</span><small>বাকি</small></p></div>
+            <div class="next__bar" aria-hidden="true"><span id="waqtBar"></span></div>
+            <p class="next__waqt" id="waqtLine">&nbsp;</p>
+                <p class="next__method">করাচি পদ্ধতি, হানাফি আসর, আপনার ডিভাইসে হিসাব। মসজিদের সময়ের সাথে মিলিয়ে নিন।</p>
+          </div>
+        <ol class="rail" id="rail" aria-label="আজকের নামাজের সময়। কোনো ওয়াক্তে চাপ দিলে সেই সময়ের আকাশ দেখাবে"></ol>
+        </div>
+      </div>
   </section>
 
-  <section class="sec" id="learn" aria-labelledby="lH">
+  <!-- FEATURES: what you can do here, with real icons; ready ones large, coming ones listed -->
+  <section class="sec feats" id="features" aria-labelledby="featsH">
     <div class="wrap">
-      <h2 class="sec-h" id="lH">শূন্য থেকে কুরআন পড়া</h2>
-      <p class="sec-intro">ছোট ছোট ধাপ, নিজের গতিতে। অগ্রগতি শুধু আপনিই দেখবেন।</p>
-      <ol class="path">
-        <li><h3>হরফ চেনা</h3><p>আরবি ২৯টি হরফ, প্রতিটির উচ্চারণ শুনে।</p></li>
-        <li><h3>হরকত</h3><p>যবর, যের, পেশ, সুকুন ও তানবীন।</p></li>
-        <li><h3>মিলিয়ে পড়া</h3><p>দুই-তিন হরফ জুড়ে শব্দ।</p></li>
-        <li><h3>ছোট সূরা</h3><p>আয়াত ধরে ধরে, তিলাওয়াতের সাথে মিলিয়ে।</p></li>
-        <li><h3>তাজবিদ</h3><p>মাখরাজ, গুন্নাহ, মাদ্দ ও ওয়াকফের নিয়ম।</p></li>
-      </ol>
-      <ul class="tracks" aria-label="অন্য শিক্ষাপথ">
-        <li><h3><i data-lucide="footprints"></i>নামাজ ধাপে ধাপে</h3><p>প্রতিটি ভঙ্গি, যা পড়তে হয় তার অর্থ ও তিলাওয়াত।</p><span class="tag">তৈরি হচ্ছে</span></li>
-        <li><h3><i data-lucide="droplets"></i>অজু, গোসল, তায়াম্মুম</h3><p>ছবিসহ ধাপ, মাযহাবভেদে পার্থক্য আলাদা করে।</p><span class="tag">তৈরি হচ্ছে</span></li>
-        <li><h3><i data-lucide="library"></i>হাদিসের পরিভাষা</h3><p>সহিহ, হাসান, দাঈফ বলতে কী বোঝায়।</p><span class="tag">তৈরি হচ্ছে</span></li>
-        <li><h3><i data-lucide="landmark"></i>সীরাত</h3><p>রাসুলুল্লাহ ﷺ-এর জীবনী, সূত্রসহ।</p><span class="tag">তৈরি হচ্ছে</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="sec dua" id="dua" aria-labelledby="dH">
-    <div class="wrap">
-      <h2 class="sec-h" id="dH">দোয়া ও যিকির</h2>
-      <div class="tabs" role="tablist" aria-label="দোয়ার ধরন">
-        <button role="tab" type="button" aria-selected="true" aria-controls="duaList" id="tabQ">কুরআনের দোয়া</button>
-        <button role="tab" type="button" aria-selected="false" aria-disabled="true">সকালের যিকির</button>
-        <button role="tab" type="button" aria-selected="false" aria-disabled="true">সন্ধ্যার যিকির</button>
-        <button role="tab" type="button" aria-selected="false" aria-disabled="true">নামাজের পর</button>
+      <div class="sec__head sec__head--split">
+        <h2 class="h2" id="featsH">প্রতিদিন যা যা করতে পারবেন</h2>
+        <p class="lead">নামাজের সময় দেখা থেকে কুরআন শোনা পর্যন্ত, প্রতিটি কাজ এক-দুই ট্যাপে। যা এখনো তৈরি হচ্ছে, তা আলাদা করে লেখা আছে।</p>
       </div>
-      <p class="tab-note">হাদিসভিত্তিক যিকিরগুলো সূত্র ও মান যাচাইয়ের পর যুক্ত হবে। এখানে আপাতত কুরআনের আয়াতে থাকা দোয়া।</p>
-      <ul class="duas" id="duaList" role="tabpanel" aria-labelledby="tabQ"><li class="loading">দোয়া আনা হচ্ছে…</li></ul>
+      <div class="feats__grid">
+        <!-- each ready feature shows one live fact from this page: last reading, the next prayer, today's dua, the saved count -->
+        <div class="feats__ready">
+          <a class="feat feat--quran" href="quran.html" id="featQuran">
+            <div class="feat__stage"><p class="feat__live" id="liveQuran"><i class="feat__dot"></i><span>১১৪ সূরা, ৩টি বাংলা অনুবাদ</span></p><img src="icons/quran.png" alt="" width="96" height="96"></div>
+            <div class="feat__body"><b>কুরআন পড়ুন ও শুনুন</b><p>আরবি, শব্দে শব্দে অর্থ, তাফসির আর তিলাওয়াত। যেখানে থামবেন, পরেরবার সেখান থেকেই।</p><em>পড়া শুরু করুন<i data-lucide="arrow-right"></i></em></div>
+          </a>
+          <a class="feat feat--namaz" href="#now">
+            <div class="feat__stage"><p class="feat__live" id="liveNext"><i class="feat__dot"></i><span>পরের নামাজ</span></p><img src="icons/namaz.png" alt="" width="96" height="96"></div>
+            <div class="feat__body"><b>নামাজের সময়</b><p>আপনার শহরের পাঁচ ওয়াক্ত, পরের নামাজের কাউন্টডাউন, কোন ওয়াক্তের কতটা পেরোল।</p><em>আজকের সময় দেখুন<i data-lucide="arrow-right"></i></em></div>
+          </a>
+          <a class="feat feat--dua" href="#today">
+            <div class="feat__stage"><p class="feat__live" id="liveDua"><i class="feat__dot"></i><span>আজকের দোয়া</span></p><img src="icons/dua.png" alt="" width="96" height="96"></div>
+            <div class="feat__body"><b>দোয়া, অর্থসহ</b><p>কুরআনের দোয়া, আরবি আর বাংলা অর্থে। প্রতিদিন একটি নতুন দোয়া।</p><em>আজকের দোয়া পড়ুন<i data-lucide="arrow-right"></i></em></div>
+          </a>
+          <a class="feat feat--tasbih" href="#tasbih" data-open-tasbih>
+            <div class="feat__stage"><p class="feat__live" id="liveTasbih"><i class="feat__dot"></i><span>ছুঁয়ে গুনুন</span></p><img src="icons/tasbih.png" alt="" width="96" height="96"></div>
+            <div class="feat__body"><b>তাসবিহ গুনুন</b><p>প্রতি ছোঁয়ায় এক; ৩৩ হলে ফোন একবার কাঁপবে আর নতুন চক্র শুরু হবে।</p><em>গোনা শুরু করুন<i data-lucide="arrow-right"></i></em></div>
+          </a>
+        </div>
+        <div class="feats__soon">
+          <p class="feats__soonh">শীঘ্রই আসছে</p>
+          <ul>
+            <li><img src="icons/hadith.png" alt="" width="44" height="44"><span><b>হাদিস</b>গ্রন্থ, নম্বর আর মান, কে মান দিয়েছেন তাঁর নামসহ</span></li>
+            <li><img src="icons/qibla.png" alt="" width="44" height="44"><span><b>কিবলার দিক</b>ফোনের কম্পাস দিয়ে কাবার দিক</span></li>
+            <li><img src="icons/zakat.png" alt="" width="44" height="44"><span><b>যাকাত হিসাব</b>নিসাব আর সম্পদ মিলিয়ে সহজ হিসাব</span></li>
+            <li><img src="icons/calendar.png" alt="" width="44" height="44"><span><b>হিজরি ক্যালেন্ডার ও রমজান</b>সাহরি, ইফতার আর বিশেষ দিন</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="sec" id="tools" aria-labelledby="tH">
-    <div class="wrap tg-grid">
-      <div>
-        <h2 class="sec-h" id="tH">তাসবিহ ও অন্যান্য</h2>
-        <div class="tasbih">
-          <button class="bead" type="button" id="bead" aria-describedby="beadHint"><b id="count">০</b><small id="beadOf">৩৩-এর মধ্যে</small></button>
-          <div class="tasbih-side">
-            <p id="beadHint">ছুঁয়ে গুনুন। ৩৩ হলে ফোন একবার কাঁপবে আর নতুন চক্র শুরু হবে।</p>
-            <p class="round" id="rounds"></p>
-            <button class="btn btn-quiet" type="button" id="beadReset"><i data-lucide="rotate-ccw"></i>শূন্য থেকে</button>
+  <!-- TODAY: one tabbed card, a dark header and three kinds of daily reading -->
+  <section class="sec today" id="today" aria-labelledby="todayH">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 class="h2" id="todayH">আজকের পাঠ</h2>
+        <p class="lead">প্রতিদিন নতুন একটি আয়াত আর একটি দোয়া, অর্থসহ। তিলাওয়াত শুনুন, সংরক্ষণ করুন, সূত্রসহ শেয়ার করুন।</p>
+      </div>
+      <div class="reader">
+        <div class="reader__head">
+          <div>
+            <p class="reader__kicker" id="todayDate"></p>
+            <p class="reader__title" id="readerTitle">আজকের আয়াত</p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="আজকের পাঠ">
+            <button role="tab" type="button" id="tab-ayah" aria-controls="panel-ayah" aria-selected="true"><i data-lucide="book-open"></i>আয়াত</button>
+            <button role="tab" type="button" id="tab-dua" aria-controls="panel-dua" aria-selected="false" tabindex="-1"><i data-lucide="hand-heart"></i>দোয়া</button>
+            <button role="tab" type="button" id="tab-hadith" aria-controls="panel-hadith" aria-selected="false" tabindex="-1"><i data-lucide="library"></i>হাদিস</button>
           </div>
         </div>
-        <ul class="tool-list">
-          <li><i data-lucide="clock"></i><a href="#top">আজকের নামাজের সময়</a></li>
-          <li><i data-lucide="compass"></i><span class="t">কিবলার দিক</span><span class="tag">তৈরি হচ্ছে</span></li>
-          <li><i data-lucide="calculator"></i><span class="t">যাকাত হিসাব</span><span class="tag">তৈরি হচ্ছে</span></li>
-          <li><i data-lucide="calendar-days"></i><span class="t">হিজরি ক্যালেন্ডার</span><span class="tag">তৈরি হচ্ছে</span></li>
-        </ul>
+
+        <div class="reader__panel" role="tabpanel" id="panel-ayah" aria-labelledby="tab-ayah">
+          <p class="reader__ar" id="ayahAr" lang="ar" dir="rtl"></p>
+          <div class="reader__body">
+            <p class="reader__lbl">অনুবাদ</p>
+            <p class="reader__tr" id="ayahTr">আয়াত আনা হচ্ছে…</p>
+            <p class="reader__ref"><b id="ayahRef"></b> অনুবাদ: তাইসিরুল কুরআন, তাওহীদ পাবলিকেশন্স</p>
+          </div>
+          <div class="reader__foot">
+            <div class="reader__acts">
+              <button class="icon-btn" type="button" id="ayahPlay" aria-label="তিলাওয়াত শুনুন" disabled><i data-lucide="play"></i></button>
+              <button class="icon-btn" type="button" id="ayahSave" aria-label="সংরক্ষণ করুন" aria-pressed="false" disabled><i data-lucide="bookmark"></i></button>
+              <button class="icon-btn" type="button" id="ayahShare" aria-label="শেয়ার করুন" disabled><i data-lucide="share-2"></i></button>
+            </div>
+            <a class="btn btn--outline" id="ayahOpen" href="quran.html">পুরো সূরা পড়ুন<i data-lucide="arrow-right"></i></a>
+          </div>
+        </div>
+
+        <div class="reader__panel" role="tabpanel" id="panel-dua" aria-labelledby="tab-dua" hidden>
+          <p class="reader__ar" id="duaAr" lang="ar" dir="rtl"></p>
+          <div class="reader__body">
+            <p class="reader__lbl">অনুবাদ</p>
+            <p class="reader__tr" id="duaTr">দোয়া আনা হচ্ছে…</p>
+            <p class="reader__ref"><b id="duaRef"></b> অনুবাদ: তাইসিরুল কুরআন</p>
+            <p class="reader__note">সকাল-সন্ধ্যার যিকির ও নামাজের পরের আমল সূত্র ও মান যাচাইয়ের পর যুক্ত হবে। আপাতত কুরআনে থাকা দোয়া।</p>
+          </div>
+        </div>
+
+        <div class="reader__panel" role="tabpanel" id="panel-hadith" aria-labelledby="tab-hadith" hidden>
+          <div class="specimen">
+            <p class="specimen__tag"><i data-lucide="shield-check"></i>যাচাই চলছে, তাই এখনো কোনো হাদিস দেখানো হচ্ছে না</p>
+            <p class="specimen__intro">আলেমদের যাচাই শেষ হলে প্রতিদিন একটি হাদিস থাকবে, প্রতিটির সাথে এই চারটি তথ্য:</p>
+            <dl>
+              <div><dt>গ্রন্থ</dt><dd>সংকলনের নাম, খণ্ড ও অধ্যায়</dd></div>
+              <div><dt>নম্বর</dt><dd>হাদিস নম্বর, অন্য নম্বরপদ্ধতিসহ</dd></div>
+              <div><dt>মান</dt><dd>সহিহ, হাসান বা দাঈফ, যিনি মান দিয়েছেন তাঁর নামসহ</dd></div>
+              <div><dt>বর্ণনাকারী</dt><dd>রাবির নাম ও পরিচিতির লিংক</dd></div>
+            </dl>
+          </div>
+        </div>
       </div>
-      <div id="guides">
-        <h2 class="sec-h">পড়ার মতো গাইড</h2>
-        <ul class="guides">
-          <li><h3>প্রথমবার নামাজ শিখছেন?</h3><p>কোথা থেকে শুরু করবেন, কী মুখস্থ করবেন, কোন ভুলগুলো সবচেয়ে বেশি হয়।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
-          <li><h3>জানাজার নামাজ, ধাপে ধাপে</h3><p>নিয়ত থেকে সালাম পর্যন্ত, চার তাকবিরে কী পড়তে হয়।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
-          <li><h3>যাকাত কার ওপর ফরজ</h3><p>নিসাব, এক বছর পূর্ণ হওয়া, আর কোন সম্পদ হিসাবে আসে।</p><p class="meta"><span class="tag">লেখা চলছে</span>আলেমের পর্যালোচনার পর প্রকাশ</p></li>
+    </div>
+  </section>
+
+  <!-- START: the one dark band, a real five-step sequence -->
+  <section class="band" id="start" aria-labelledby="startH">
+    <div class="wrap band__grid">
+      <div class="band__copy">
+        <h2 class="h2 h2--light" id="startH">শূন্য থেকে নামাজ ও কুরআন শিখুন</h2>
+        <p class="lead lead--light">যাঁরা কখনো শেখার সুযোগ পাননি, তাঁদের জন্য অজু থেকে তাজবিদ পর্যন্ত পাঁচটি ধাপ।</p>
+        <ul class="checks">
+          <li><i data-lucide="circle-check"></i>প্রতিটি পড়ার অর্থ, উচ্চারণ ও তিলাওয়াত</li>
+          <li><i data-lucide="circle-check"></i>নিজের গতিতে, অগ্রগতি শুধু আপনার ডিভাইসে</li>
+          <li><i data-lucide="circle-check"></i>মাযহাবভেদে পার্থক্য আলাদা করে দেখানো</li>
         </ul>
+        <a class="btn btn--gold" href="quran.html#112:1"><i data-lucide="play"></i>ছোট সূরা দিয়ে শুরু করুন</a>
       </div>
+      <ol class="route">
+        <li class="is-ready"><a href="learn.html#wudu"><span class="route__n">১</span><div><b>অজু</b><span>প্রতিটি ধাপ চলমান ছবিতে, সাথে অজুর দোয়া</span></div><em>এখনই শিখুন</em></a></li>
+        <li class="is-ready"><a href="learn.html#namaz"><span class="route__n">২</span><div><b>নামাজ</b><span>প্রতিটি ভঙ্গি, যা পড়তে হয় তার অর্থসহ</span></div><em>এখনই শিখুন</em></a></li>
+        <li><span class="route__n">৩</span><div><b>আরবি হরফ</b><span>২৯টি হরফ, হরকত, মিলিয়ে পড়া</span></div><em>তৈরি হচ্ছে</em></li>
+        <li class="is-ready"><a href="quran.html#112:1"><span class="route__n">৪</span><div><b>ছোট সূরা</b><span>আয়াত ধরে ধরে, তিলাওয়াতের সাথে মিলিয়ে</span></div><em>এখনই পড়ুন</em></a></li>
+        <li><span class="route__n">৫</span><div><b>তাজবিদ</b><span>মাখরাজ, গুন্নাহ, মাদ্দ ও ওয়াকফ</span></div><em>তৈরি হচ্ছে</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- QURAN SPOTLIGHT: the feature that works today, with real facts -->
+  <section class="sec spot" id="quran" aria-labelledby="quranH">
+    <div class="wrap">
+      <div class="spot__card">
+        <div class="spot__copy">
+          <p class="spot__kicker"><img src="icons/quran.png" alt="" width="32" height="32">কুরআন</p>
+          <h2 class="h2" id="quranH">পড়ুন, শুনুন, অর্থ বুঝুন</h2>
+          <p class="lead">আরবি লেখা, তিনটি বাংলা অনুবাদ, শব্দে শব্দে অর্থ, তাফসির আর তিলাওয়াত, এক পাতায়। যেখানে থামবেন, পরেরবার সেখান থেকেই।</p>
+          <dl class="facts">
+            <div><dt>১১৪</dt><dd>সূরা</dd></div>
+            <div><dt>৩টি</dt><dd>বাংলা অনুবাদ</dd></div>
+            <div><dt>১১টি</dt><dd>তাফসির</dd></div>
+            <div><dt>১২টি</dt><dd>তিলাওয়াত</dd></div>
+          </dl>
+          <div class="spot__ctas">
+            <a class="btn btn--solid" href="quran.html"><i data-lucide="book-open"></i>কুরআন পড়া শুরু করুন</a>
+            <a class="btn btn--outline" id="continue" href="quran.html?view=saved"><i data-lucide="bookmark"></i>আমার সংরক্ষণ</a>
+          </div>
+        </div>
+        <div class="spot__list">
+          <p class="spot__listh">অনেকে যে সূরাগুলো পড়েন</p>
+          <ol class="surahs" id="surahs"><li class="surahs__loading">সূরার তালিকা আনা হচ্ছে…</li></ol>
+          <a class="link spot__all" href="quran.html">১১৪টি সূরার পুরো সূচি</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALL SECTIONS: what exists and what is coming, honestly -->
+  <section class="sec all" id="contents" aria-labelledby="allH">
+    <div class="wrap">
+      <div class="sec__head sec__head--split">
+        <h2 class="h2" id="allH">Daily Islam-এ যা যা আছে</h2>
+        <p class="lead">সবুজ চিহ্ন মানে এখনই ব্যবহার করা যায়। বাকিগুলো যাচাই ও তৈরির পথে।</p>
+      </div>
+      <div class="groups">
+        <div class="group">
+          <p class="group__h"><img class="group__ic" src="icons/quran.png" alt="" width="40" height="40">পড়ুন</p>
+          <ul>
+            <li><a href="quran.html">কুরআন, অনুবাদ ও তাফসির<span class="ok">আছে</span></a></li>
+            <li>হাদিসের গ্রন্থাগার<span>তৈরি হচ্ছে</span></li>
+            <li>ইসলামিক জ্ঞানভান্ডার<span>তৈরি হচ্ছে</span></li>
+            <li><a href="quran.html?view=saved">আমার সংরক্ষণ<span class="ok">আছে</span></a></li>
+          </ul>
+        </div>
+        <div class="group">
+          <p class="group__h"><img class="group__ic" src="icons/namaz.png" alt="" width="40" height="40">আমল করুন</p>
+          <ul>
+            <li><a href="#now">নামাজের সময়<span class="ok">আছে</span></a></li>
+            <li><a href="#today">কুরআনের দোয়া<span class="ok">আছে</span></a></li>
+            <li><a href="learn.html">নামাজ ও অজু শিক্ষা<span class="ok">আছে</span></a></li>
+            <li>রমজান: সাহরি ও ইফতার<span>তৈরি হচ্ছে</span></li>
+            <li>হজ ও উমরাহ<span>পরে</span></li>
+          </ul>
+        </div>
+        <div class="group">
+          <p class="group__h"><img class="group__ic" src="icons/learn.png" alt="" width="40" height="40">শিখুন</p>
+          <ul>
+            <li>কুরআন পড়া শেখা<span>তৈরি হচ্ছে</span></li>
+            <li>ইসলামিক গাইড<span>লেখা চলছে</span></li>
+            <li>পরিবার ও দৈনন্দিন জীবন<span>পরে</span></li>
+            <li>প্রশ্নোত্তর<span>পরে</span></li>
+          </ul>
+        </div>
+        <div class="group">
+          <p class="group__h"><img class="group__ic" src="icons/qibla.png" alt="" width="40" height="40">টুলস</p>
+          <ul>
+            <li><a href="#tasbih" data-open-tasbih>তাসবিহ<span class="ok">আছে</span></a></li>
+            <li>কিবলার দিক<span>তৈরি হচ্ছে</span></li>
+            <li>যাকাত হিসাব<span>তৈরি হচ্ছে</span></li>
+            <li>হিজরি ক্যালেন্ডার<span>তৈরি হচ্ছে</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST: a deep band before the footer -->
+  <section class="trust" id="sources" aria-labelledby="trustH">
+    <div class="wrap trust__grid">
+      <div>
+        <h2 class="h2 h2--light" id="trustH">প্রতিটি লেখার পেছনে সূত্র</h2>
+        <p class="lead lead--light">কুরআনের লেখা, অনুবাদ ও তিলাওয়াত আসে Quran.com (Quran Foundation) থেকে। অনুবাদ: তাইসিরুল কুরআন, তাওহীদ পাবলিকেশন্স। তিলাওয়াত: মিশারি রাশিদ আল-আফাসি।</p>
+        <a class="btn btn--light" href="mailto:corrections@daily-islam.example?subject=ভুল%20সংশোধন"><i data-lucide="flag"></i>ভুল চোখে পড়লে জানান</a>
+      </div>
+      <ul class="promises">
+        <li><i data-lucide="file-search"></i><b>উৎস দেখানো হয়</b><span>গ্রন্থ, অনুবাদক ও সংস্করণ, প্রতিটি লেখার সাথে</span></li>
+        <li><i data-lucide="shield-check"></i><b>আলেমদের পর্যালোচনা</b><span>ফিকহ ও হাদিসের মান যাচাইয়ের পরেই প্রকাশ</span></li>
+        <li><i data-lucide="ban"></i><b>কোনো বিজ্ঞাপন নেই</b><span>ইবাদতের পাতায় বিজ্ঞাপন বা পপআপ নেই</span></li>
+        <li><i data-lucide="smartphone"></i><b>তথ্য আপনার কাছে</b><span>সংরক্ষণ ও অগ্রগতি এই ডিভাইসেই থাকে</span></li>
+      </ul>
     </div>
   </section>
 </main>
 
-<footer class="back">
-  <div class="wrap back-grid">
+<footer class="foot">
+  <div class="wrap foot__grid">
     <div>
-      <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
-        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><path d="M20 10.5 29.5 20 20 29.5 10.5 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>
+      <a class="mark mark--light" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
+        <span class="mark__seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 4 36 20 20 36 4 20Z"/><path d="M20 11 29 20 20 29 11 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg></span>
         <span>Daily Islam</span>
       </a>
-      <p style="margin-top:var(--s3)">কোনো বিজ্ঞাপন নেই, কারও ইবাদতের তুলনা নেই। আপনার সংরক্ষণ ও অগ্রগতি এই ব্রাউজারেই থাকে।</p>
+      <p class="foot__line">শেখা, আমল আর অভ্যাস, নির্ভরযোগ্য সূত্র থেকে। বাংলাদেশের জন্য, বাংলায়।</p>
     </div>
-    <div>
-      <h2>লেখার উৎস</h2>
-      <p>কুরআনের আরবি লেখা, বাংলা অনুবাদ, শব্দার্থ, তাফসির ও তিলাওয়াত: <a href="https://quran.com" rel="noopener">Quran.com</a> (Quran Foundation)।</p>
-      <p>তিলাওয়াত: মিশারি রাশিদ আল-আফাসি।</p>
-    </div>
-    <div>
-      <h2>এটি একটি প্রোটোটাইপ</h2>
-      <p>নামাজের সময় ডিভাইসে হিসাব করা, হিজরি তারিখ উম্মুল কুরা হিসাবে আনুমানিক। বাংলাদেশে চাঁদ দেখার ওপর তারিখ এক দিন পিছিয়ে থাকতে পারে।</p>
-    </div>
+    <nav aria-label="পড়ুন">
+      <h2>পড়ুন</h2>
+      <a href="quran.html">কুরআন</a><a href="#today">আজকের পাঠ</a><a href="quran.html?view=saved">আমার সংরক্ষণ</a>
+    </nav>
+    <nav aria-label="আমল">
+      <h2>আমল</h2>
+      <a href="#now">নামাজের সময়</a><a href="#start">শূন্য থেকে শুরু</a><a href="#contents">সব বিভাগ</a>
+    </nav>
+    <nav aria-label="Daily Islam">
+      <h2>Daily Islam</h2>
+      <a href="#sources">উৎস ও পর্যালোচনা</a><a href="mailto:corrections@daily-islam.example">ভুল জানান</a>
+    </nav>
   </div>
+  <p class="wrap foot__note">আইকন: Microsoft Fluent Emoji (MIT লাইসেন্স)। ছবি: Abdul Momin, Masum-al-Hasan Rocky, Muntashir Al-Islam, DeepanjanGhosh, Wikimedia Commons (CC BY-SA 4.0)। এটি একটি প্রোটোটাইপ। হিজরি তারিখ উম্মুল কুরা হিসাবে আনুমানিক; বাংলাদেশে চাঁদ দেখার ওপর এক দিন পিছিয়ে থাকতে পারে।</p>
 </footer>
 
-<dialog class="search" id="searchDlg" aria-labelledby="searchH">
-  <div class="search-head">
-    <h2 id="searchH" style="font-size:var(--t-md)">সূরা খুঁজুন</h2>
+<nav class="tabbar" aria-label="দ্রুত যান">
+  <a href="#now" aria-current="page"><i data-lucide="sun"></i><span>আজ</span></a>
+  <a href="quran.html"><i data-lucide="book-open"></i><span>কুরআন</span></a>
+  <a href="learn.html#namaz"><i data-lucide="person-standing"></i><span>নামাজ</span></a>
+  <a href="#today"><i data-lucide="hand-heart"></i><span>দোয়া</span></a>
+  <a href="#features"><i data-lucide="layout-grid"></i><span>সব</span></a>
+</nav>
+
+<dialog class="search-dlg" id="searchDlg" aria-labelledby="searchH">
+  <div class="search-dlg__head">
+    <h2 id="searchH">সূরা খুঁজুন</h2>
     <button class="icon-btn" type="button" data-close aria-label="বন্ধ করুন"><i data-lucide="x"></i></button>
   </div>
-  <form action="quran.html" method="get">
-    <label class="sr" for="q">সূরার নাম, অর্থ বা নম্বর</label>
-    <input class="field" id="q" name="q" type="search" placeholder="যেমন: ইয়াসিন, Mulk, ৬৭" autocomplete="off" required>
-    <button class="btn btn-solid" type="submit"><i data-lucide="search"></i>খুঁজুন</button>
+  <form class="hero-search" role="search" action="quran.html">
+    <i data-lucide="search"></i>
+    <input name="q" type="search" placeholder="যেমন: ইয়াসিন, Mulk, ৬৭" aria-label="সূরার নাম, অর্থ বা নম্বর" autocomplete="off" required>
+    <button class="hero-search__go" type="submit" aria-label="খুঁজুন"><i data-lucide="arrow-right"></i></button>
   </form>
-  <p class="search-hint">এখন শুধু সূরা খোঁজা যায়। পুরো কুরআন, হাদিস ও দোয়ায় খোঁজার সুবিধা পরে আসবে।</p>
+  <p class="search-dlg__hint">এখন শুধু সূরা খোঁজা যায়। পুরো কুরআন, হাদিস ও দোয়ায় খোঁজা পরে আসবে।</p>
 </dialog>
+
+<dialog class="search-dlg tasbih-dlg" id="tasbihDlg" aria-labelledby="tasbihH">
+  <div class="search-dlg__head">
+    <h2 id="tasbihH">তাসবিহ</h2>
+    <button class="icon-btn" type="button" data-close aria-label="বন্ধ করুন"><i data-lucide="x"></i></button>
+  </div>
+  <button class="bead" type="button" id="bead" aria-describedby="beadHint"><img src="icons/tasbih.png" alt="" width="64" height="64"><b id="count">০</b><small>৩৩-এর মধ্যে</small></button>
+  <p class="search-dlg__hint" id="beadHint">ছুঁয়ে গুনুন। ৩৩ হলে ফোন একবার কাঁপবে আর নতুন চক্র শুরু হবে। গোনা এই ডিভাইসেই থাকে।</p>
+  <div class="tasbih-dlg__foot"><p id="rounds"></p><button class="btn btn--outline btn--sm" type="button" id="beadReset"><i data-lucide="rotate-ccw"></i>শূন্য থেকে</button></div>
+</dialog>
+
+<script src="app.js?v=11"></script>
+<script src="home.js?v=10"></script>
 </body>
 </html>

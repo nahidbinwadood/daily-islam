@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>অজু ও নামাজ শিক্ষা, ধাপে ধাপে ছবিসহ — Daily Islam</title>
+<meta name="description" content="অজু আর নামাজ ধাপে ধাপে শিখুন: প্রতিটি ধাপের নড়াচড়া দেখুন, কী পড়তে হয় আরবিতে, বাংলা উচ্চারণ ও অর্থসহ শুনুন।">
+<meta name="theme-color" content="#0A6650">
+<link rel="preconnect" href="https://api.quran.com">
+<link rel="stylesheet" href="home.css?v=10">
+<link rel="stylesheet" href="learn.css?v=2">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">মূল লেখায় যান</a>
+
+<header class="top" id="top">
+  <div class="wrap top__bar">
+    <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
+      <span class="mark__seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 4 36 20 20 36 4 20Z"/><path d="M20 11 29 20 20 29 11 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg></span>
+      <span>Daily Islam</span>
+    </a>
+    <nav class="top__nav" id="topNav" aria-label="প্রধান বিভাগ">
+      <a href="quran.html">কুরআন</a>
+      <a href="index.html#today">হাদিস</a>
+      <a href="learn.html" aria-current="page">নামাজ শিক্ষা</a>
+      <a href="index.html#today">দোয়া ও যিকির</a>
+      <a href="index.html#contents">সব বিভাগ</a>
+    </nav>
+    <div class="top__act">
+      <a class="btn btn--solid btn--sm top__cta" href="quran.html"><i data-lucide="book-open"></i>কুরআন পড়ুন</a>
+      <button class="icon-btn top__menu" type="button" id="menuBtn" aria-expanded="false" aria-controls="topNav" aria-label="মেনু খুলুন"><i data-lucide="menu"></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="lhead" aria-labelledby="learnH">
+    <div class="wrap lhead__in">
+      <div>
+        <h1 class="lhead__h" id="learnH">অজু ও নামাজ শিক্ষা</h1>
+        <p class="lhead__sub">প্রতিটি ধাপ চোখের সামনে দেখুন, কী পড়তে হয় শুনুন, তারপর নিজে করুন। এক ধাপ শেষ হলে <b>পরের ধাপ</b> চাপুন।</p>
+      </div>
+      <div class="switch" role="tablist" aria-label="কী শিখবেন">
+        <button role="tab" type="button" id="tab-wudu" data-guide="wudu" aria-selected="true"><img src="icons/wudu.png" alt="" width="40" height="40"><span><b>অজু</b><small>১১টি ধাপ</small></span></button>
+        <button role="tab" type="button" id="tab-namaz" data-guide="namaz" aria-selected="false" tabindex="-1"><img src="icons/namaz.png" alt="" width="40" height="40"><span><b>নামাজ</b><small>২ রাকাত, ১৭টি ধাপ</small></span></button>
+      </div>
+    </div>
+    <p class="wrap review"><i data-lucide="shield-alert"></i><span><b>যাচাই চলছে:</b> আরবি পাঠ ও তিলাওয়াত হুবহু হিসনুল মুসলিম, সুনান আবু দাউদ আর কুরআন ডট কম থেকে নেওয়া। ধাপের নিয়ম (হানাফি মাযহাব অনুযায়ী), বাংলা উচ্চারণ ও অর্থ এখনো খসড়া, আলেমের যাচাই বাকি।</span></p>
+  </section>
+
+  <section class="guide" aria-label="ধাপে ধাপে শিক্ষা">
+    <div class="wrap">
+      <ol class="steps" id="steps" aria-label="সব ধাপ"></ol>
+
+      <div class="guide__grid">
+        <div class="stagecol">
+          <div class="stage" id="stage">
+            <svg viewBox="0 0 400 400" id="scene" role="img" aria-labelledby="stepTitle"></svg>
+            <p class="stage__count" id="count" hidden></p>
+            <p class="stage__say" id="say" lang="ar" dir="rtl" hidden></p>
+            <p class="stage__rakah" id="rakah" hidden></p>
+          </div>
+          <p class="stage__cap" id="cap" aria-live="polite">&nbsp;</p>
+          <div class="player">
+            <button class="icon-btn icon-btn--lg" type="button" id="prevBtn" aria-label="আগের ধাপ"><i data-lucide="chevron-left"></i></button>
+            <button class="btn btn--solid player__play" type="button" id="playBtn"><i data-lucide="pause"></i><span>থামান</span></button>
+            <button class="btn btn--gold player__next" type="button" id="nextBtn"><span>পরের ধাপ</span><i data-lucide="chevron-right"></i></button>
+          </div>
+          <div class="player__all">
+            <button class="btn btn--ghost-ink" type="button" id="allBtn"><i data-lucide="list-video"></i><span id="allLbl">পুরো অজু একটানা দেখুন</span></button>
+            <label class="toggle"><input type="checkbox" id="soundChk"><span>সাথে তিলাওয়াত শুনুন</span></label>
+          </div>
+        </div>
+
+        <article class="step" id="step" aria-live="polite">
+          <p class="step__no" id="stepNo"></p>
+          <h2 class="step__h" id="stepTitle"></h2>
+          <p class="step__tags" id="stepTags"></p>
+          <ul class="step__how" id="stepHow"></ul>
+          <div id="stepNote"></div>
+          <div id="recite"></div>
+          <details class="step__mist" id="stepMist"><summary><i data-lucide="triangle-alert"></i>যে ভুলগুলো অনেকে করেন<i data-lucide="chevron-down" class="chev"></i></summary><ul id="mistList"></ul></details>
+        </article>
+      </div>
+
+      <dl class="legend" aria-label="শব্দগুলোর মানে">
+        <div><dt><span class="tag tag--fard">ফরজ</span></dt><dd>বাদ দিলে অজু বা নামাজ হবে না।</dd></div>
+        <div><dt><span class="tag tag--wajib">ওয়াজিব</span></dt><dd>নামাজে ভুলে বাদ গেলে শেষে সাহু সিজদা দিতে হয়।</dd></div>
+        <div><dt><span class="tag tag--sunnah">সুন্নত</span></dt><dd>নবীজি (সা.) নিয়মিত করতেন, ইচ্ছা করে ছাড়া উচিত নয়।</dd></div>
+        <div><dt><span class="tag tag--mustahab">মুস্তাহাব</span></dt><dd>করলে সওয়াব, না করলে গুনাহ নেই।</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- the extra blocks for each guide: rak'ah chart and what breaks it -->
+  <section class="sec more" id="more" aria-labelledby="moreH">
+    <div class="wrap" id="moreIn"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <a class="mark mark--light" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
+        <span class="mark__seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 4 36 20 20 36 4 20Z"/><path d="M20 11 29 20 20 29 11 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg></span>
+        <span>Daily Islam</span>
+      </a>
+      <p class="foot__line">শেখা, আমল আর অভ্যাস, নির্ভরযোগ্য সূত্র থেকে। বাংলাদেশের জন্য, বাংলায়।</p>
+    </div>
+    <nav aria-label="পড়ুন"><h2>পড়ুন</h2><a href="quran.html">কুরআন</a><a href="index.html#today">আজকের পাঠ</a></nav>
+    <nav aria-label="আমল"><h2>আমল</h2><a href="index.html#now">নামাজের সময়</a><a href="learn.html#wudu">অজু শিক্ষা</a><a href="learn.html#namaz">নামাজ শিক্ষা</a></nav>
+    <nav aria-label="Daily Islam"><h2>Daily Islam</h2><a href="index.html#sources">উৎস ও পর্যালোচনা</a><a href="mailto:corrections@daily-islam.example">ভুল জানান</a></nav>
+  </div>
+  <p class="wrap foot__note">দোয়ার আরবি, ইংরেজি অর্থ ও তিলাওয়াত: হিসনুল মুসলিম (hisnmuslim.com)। সালামের শব্দ: সুনান আবু দাউদ ৯৯৬ (hadith-api)। সূরা ফাতিহা ও ইখলাস: কুরআন ডট কম। আইকন: Microsoft Fluent Emoji (MIT)। এটি একটি প্রোটোটাইপ।</p>
+</footer>
+
+<nav class="tabbar" aria-label="দ্রুত যান">
+  <a href="index.html"><i data-lucide="sun"></i><span>আজ</span></a>
+  <a href="quran.html"><i data-lucide="book-open"></i><span>কুরআন</span></a>
+  <a href="learn.html" aria-current="page"><i data-lucide="person-standing"></i><span>নামাজ</span></a>
+  <a href="index.html#today"><i data-lucide="hand-heart"></i><span>দোয়া</span></a>
+  <a href="index.html#features"><i data-lucide="layout-grid"></i><span>সব</span></a>
+</nav>
+
+<audio id="audio" preload="none"></audio>
+<script src="app.js?v=11"></script>
+<script src="learn-data.js?v=1"></script>
+<script src="learn.js?v=2"></script>
+</body>
+</html>

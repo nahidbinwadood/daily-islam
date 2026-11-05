@@ -24,12 +24,40 @@ const TRANSLATIONS = [
   { id: 163, name: 'শাইখ মুজিবুর রহমান', by: 'দারুসসালাম' },
   { id: 162, name: 'রাওয়াইউল বায়ান', by: 'বায়ান ফাউন্ডেশন' },
 ];
-const TAFSIRS = [
-  { id: 165, name: 'তাফসীর আহসানুল বায়ান', by: 'বায়ান ফাউন্ডেশন' },
-  { id: 166, name: 'তাফসীর আবু বকর জাকারিয়া', by: 'বাদশাহ ফাহাদ কুরআন মুদ্রণ কমপ্লেক্স' },
-  { id: 164, name: 'তাফসীর ইবনে কাসীর', by: 'তাওহীদ পাবলিকেশন্স' },
-  { id: 381, name: 'তাফসীর ফাতহুল মাজীদ', by: 'আব্দুর রহমান বিন হাসান আল-শাইখ' },
+// Quran.com recitation ids. Every one has per-ayah audio with word timings.
+const RECITERS = [
+  { id: 7, name: 'মিশারি রাশিদ আল-আফাসি', style: 'স্পষ্ট ও সুরেলা' },
+  { id: 3, name: 'আব্দুর রহমান আস-সুদাইস', style: 'মসজিদুল হারামের ইমাম' },
+  { id: 10, name: 'সাউদ আশ-শুরাইম', style: 'মসজিদুল হারামের ইমাম' },
+  { id: 4, name: 'আবু বকর আশ-শাতিরি', style: 'কোমল ও ধীর' },
+  { id: 5, name: 'হানি আর-রিফাই', style: 'আবেগময়' },
+  { id: 2, name: 'আব্দুল বাসিত আব্দুস সামাদ', style: 'মুরাত্তাল, স্বাভাবিক গতি' },
+  { id: 1, name: 'আব্দুল বাসিত আব্দুস সামাদ', style: 'মুজাওয়াদ, ধীর ও সুরেলা' },
+  { id: 9, name: 'মুহাম্মাদ সিদ্দিক আল-মিনশাবি', style: 'মুরাত্তাল, স্বাভাবিক গতি' },
+  { id: 8, name: 'মুহাম্মাদ সিদ্দিক আল-মিনশাবি', style: 'মুজাওয়াদ, ধীর ও সুরেলা' },
+  { id: 6, name: 'মাহমুদ খলিল আল-হুসারি', style: 'মুরাত্তাল, তাজবিদ শেখার জন্য ভালো' },
+  { id: 12, name: 'মাহমুদ খলিল আল-হুসারি', style: 'মুআল্লিম: শেখার জন্য ধীরে, শুনে শুনে পড়ুন' },
+  { id: 11, name: 'মুহাম্মাদ আত-তাবলাবি', style: 'মিসরীয় ধারা' },
 ];
+const recOf = (id) => RECITERS.find((r) => r.id === id) || RECITERS[0];
+// a short label: the name, plus the style where one qari has two recitations
+const recLabel = (r) => (RECITERS.filter((x) => x.name === r.name).length > 1 ? `${r.name} (${r.style.split(/[,:]/)[0]})` : r.name);
+// some recitations come as protocol-relative mirror links, the rest as paths on verses.quran.com
+const audioUrl = (u) => (u.startsWith('//') ? 'https:' + u : /^https?:/.test(u) ? u : AUDIO_BASE + u);
+const TAFSIRS = [
+  { id: 165, lang: 'bn', name: 'তাফসীর আহসানুল বায়ান', by: 'বায়ান ফাউন্ডেশন' },
+  { id: 166, lang: 'bn', name: 'তাফসীর আবু বকর জাকারিয়া', by: 'বাদশাহ ফাহাদ কুরআন মুদ্রণ কমপ্লেক্স' },
+  { id: 164, lang: 'bn', name: 'তাফসীর ইবনে কাসীর', by: 'তাওহীদ পাবলিকেশন্স' },
+  { id: 381, lang: 'bn', name: 'তাফসীর ফাতহুল মাজীদ', by: 'আব্দুর রহমান বিন হাসান আল-শাইখ' },
+  { id: 169, lang: 'en', name: 'Ibn Kathir (সংক্ষিপ্ত)', by: 'ইংরেজি' },
+  { id: 168, lang: 'en', name: "Ma'arif al-Qur'an", by: 'মুফতি মুহাম্মাদ শফি, ইংরেজি' },
+  { id: 817, lang: 'en', name: 'Tazkirul Quran', by: 'মাওলানা ওয়াহিদুদ্দিন খান, ইংরেজি' },
+  { id: 16, lang: 'ar', name: 'التفسير الميسر', by: 'আল-মুয়াসসার, আরবি' },
+  { id: 91, lang: 'ar', name: 'تفسير السعدي', by: 'আস-সাদি, আরবি' },
+  { id: 14, lang: 'ar', name: 'تفسير ابن كثير', by: 'ইবনে কাসীর, আরবি' },
+  { id: 90, lang: 'ar', name: 'تفسير القرطبي', by: 'আল-কুরতুবি, আরবি' },
+];
+const TAF_LANG = { bn: 'বাংলা', en: 'English', ar: 'العربية' };
 const trOf = (id) => TRANSLATIONS.find((t) => t.id === id) || TRANSLATIONS[0];
 
 async function api(path) {

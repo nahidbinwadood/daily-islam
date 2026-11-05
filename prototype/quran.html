@@ -4,40 +4,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>কুরআন — Daily Islam</title>
-<meta name="description" content="কুরআনের আরবি লেখা, বাংলা অনুবাদ, শব্দে শব্দে অর্থ, তাফসির ও তিলাওয়াত।">
-<meta name="theme-color" content="#1D4433">
+<meta name="description" content="কুরআনের আরবি লেখা, তিনটি বাংলা অনুবাদ, শব্দে শব্দে অর্থ, ১১টি তাফসির ও ১২টি তিলাওয়াত।">
+<meta name="theme-color" content="#0A6650">
 <link rel="preconnect" href="https://api.quran.com">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="quran.css?v=3">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-<script src="app.js" defer></script>
-<script src="quran.js" defer></script>
+<script src="app.js?v=11" defer></script>
+<script src="quran.js?v=2" defer></script>
 </head>
 <body class="reader">
 <a class="skip" href="#main">আয়াতে যান</a>
 
-<header class="r-bar">
-  <button class="icon-btn" type="button" id="idxBtn" aria-controls="index" aria-expanded="true" aria-label="সূরার সূচি লুকান"><i data-lucide="panel-left"></i></button>
+<!-- 1. site header, the same as the home page -->
+<header class="top">
   <a class="mark" href="index.html" aria-label="Daily Islam, প্রথম পাতা">
-    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 3 37 20 20 37 3 20Z"/><path d="M20 10.5 29.5 20 20 29.5 10.5 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg>
-    <span>Daily Islam</span>
+    <span class="mark__seal"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 4 36 20 20 36 4 20Z"/><path d="M20 11 29 20 20 29 11 20Z"/><path d="M20 16.5 23.5 20 20 23.5 16.5 20Z" fill="currentColor"/></svg></span>
+    <span class="mark__name">Daily Islam</span>
   </a>
-  <div class="r-title" id="rTitle" aria-hidden="true"></div>
-  <div class="r-actions">
-    <a class="icon-btn" href="quran.html?view=saved" aria-label="সংরক্ষিত আয়াত"><i data-lucide="bookmark"></i></a>
+  <p class="top__where"><i data-lucide="book-open"></i>কুরআন</p>
+  <div class="top__act">
+    <button class="btn btn--quiet btn--sm" type="button" id="helpBtn"><i data-lucide="circle-help"></i><span>কীভাবে পড়বেন</span></button>
+    <a class="icon-btn" href="quran.html?view=saved" aria-label="সংরক্ষিত আয়াত" title="সংরক্ষিত আয়াত"><i data-lucide="bookmark"></i></a>
     <div class="dd" id="setDd" data-keep-open="1">
-      <button type="button" aria-expanded="false" aria-haspopup="true" aria-label="পড়ার সেটিংস">
-        <i data-lucide="type"></i><i data-lucide="chevron-down" class="chev"></i>
-      </button>
+      <button type="button" class="dd__btn" aria-expanded="false" aria-haspopup="true"><i data-lucide="settings-2"></i><span class="hide-sm">পড়ার সেটিংস</span><i data-lucide="chevron-down" class="chev"></i></button>
       <ul class="settings" hidden>
         <li>
           <h2 id="arSizeH">আরবি লেখার আকার</h2>
           <div class="opt"><span class="size-a" aria-hidden="true">ب</span><input type="range" id="arSize" min="1.6" max="3.4" step="0.1" aria-labelledby="arSizeH"><span class="size-a big" aria-hidden="true">ب</span></div>
         </li>
         <li>
+          <h2 id="trSizeH">বাংলা লেখার আকার (অনুবাদ ও তাফসির)</h2>
+          <div class="opt"><span class="size-b" aria-hidden="true">অ</span><input type="range" id="trSize" min="1" max="1.6" step="0.05" aria-labelledby="trSizeH"><span class="size-b big" aria-hidden="true">অ</span></div>
+        </li>
+        <li>
+          <h2 id="scriptH">আরবি লিপি</h2>
+          <div class="seg" role="radiogroup" aria-labelledby="scriptH" id="scriptGroup">
+            <label><input type="radio" name="script" value="uthmani"><span>উসমানি</span></label>
+            <label><input type="radio" name="script" value="indopak"><span>ইন্দো-পাক</span></label>
+          </div>
+        </li>
+        <li>
           <h2 id="trH">বাংলা অনুবাদ</h2>
           <div role="radiogroup" aria-labelledby="trH" id="trGroup"></div>
         </li>
-        <li style="margin-top:var(--s3)">
+        <li class="switches">
           <label class="switch" for="showTr">অনুবাদ দেখান <input type="checkbox" id="showTr"></label>
           <label class="switch" for="wbw">শব্দে শব্দে অর্থ <input type="checkbox" id="wbw"></label>
         </li>
@@ -46,46 +56,91 @@
   </div>
 </header>
 
+<!-- 2. the navigator: go anywhere in two taps -->
+<nav class="navi" aria-label="কুরআনে যান">
+  <button class="icon-btn navi__idx" type="button" id="idxBtn" aria-controls="index" aria-expanded="true" title="সূচি"><i data-lucide="list"></i><span class="sr" id="idxBtnLbl">সূরা ও পারার সূচি লুকান</span></button>
+  <a class="icon-btn" id="prevS" href="#" aria-label="আগের সূরা" title="আগের সূরা"><i data-lucide="chevron-left"></i></a>
+  <label class="pick pick--surah"><span class="pick__lbl">সূরা</span><select id="selSurah" aria-label="সূরা বাছাই করুন"></select><i data-lucide="chevron-down"></i></label>
+  <label class="pick pick--ayah"><span class="pick__lbl">আয়াত</span><select id="selAyah" aria-label="আয়াতে যান"></select><i data-lucide="chevron-down"></i></label>
+  <a class="icon-btn" id="nextS" href="#" aria-label="পরের সূরা" title="পরের সূরা"><i data-lucide="chevron-right"></i></a>
+  <label class="pick pick--juz hide-md"><span class="pick__lbl">পারা</span><select id="selJuz" aria-label="পারায় যান"><option value="">—</option></select><i data-lucide="chevron-down"></i></label>
+  <div class="navi__end">
+    <label class="pick pick--rec hide-md"><span class="pick__lbl">ক্বারি</span><select id="selRec" data-rec aria-label="ক্বারি বাছাই করুন"></select><i data-lucide="chevron-down"></i></label>
+    <button class="btn btn--solid btn--sm" type="button" id="playAll"><i data-lucide="play"></i><span class="hide-sm">পুরো সূরা শুনুন</span></button>
+  </div>
+</nav>
+
 <div class="r-layout">
-  <aside class="r-index" id="index" aria-label="সূরার সূচি">
+  <!-- 3. index: surahs or the 30 paras -->
+  <aside class="r-index" id="index" aria-label="সূরা ও পারার সূচি">
     <div class="r-index-head">
-      <label class="sr" for="filter">সূরা খুঁজুন</label>
-      <input class="field" id="filter" type="search" placeholder="নাম, অর্থ বা নম্বর দিয়ে খুঁজুন" autocomplete="off">
+      <div class="tabs" role="tablist" aria-label="সূচির ধরন">
+        <button role="tab" type="button" id="tabS" aria-selected="true" aria-controls="idxList">সূরা (১১৪)</button>
+        <button role="tab" type="button" id="tabJ" aria-selected="false" aria-controls="juzList" tabindex="-1">পারা (৩০)</button>
+      </div>
+      <label class="search"><i data-lucide="search"></i><span class="sr">সূরা খুঁজুন</span>
+        <input class="field" id="filter" type="search" placeholder="নাম, নম্বর, বা ২:২৫৫ লিখুন" autocomplete="off"></label>
     </div>
-    <nav class="idx-list" id="idxList" aria-label="সূরা"></nav>
+    <nav class="idx-list" id="idxList" role="tabpanel" aria-labelledby="tabS"></nav>
+    <nav class="idx-list" id="juzList" role="tabpanel" aria-labelledby="tabJ" hidden></nav>
   </aside>
 
   <main class="r-main" id="main" tabindex="-1">
+    <!-- 4. a short guide, shown on the first visit and from the help button -->
+    <section class="guide" id="guide" hidden aria-labelledby="guideH">
+      <div class="guide__head">
+        <h2 id="guideH">কুরআন পড়ার পাতা, যেভাবে ব্যবহার করবেন</h2>
+        <button class="icon-btn" type="button" id="guideClose" aria-label="গাইড বন্ধ করুন"><i data-lucide="x"></i></button>
+      </div>
+      <ol class="guide__steps">
+        <li><span class="guide__ic"><i data-lucide="list"></i></span><b>যেকোনো জায়গায় যান</b><span>ওপরের <em>সূরা</em> আর <em>আয়াত</em> বাক্স থেকে বেছে নিন, অথবা সূচি থেকে সূরা বা পারা বাছুন। খোঁজার ঘরে ২:২৫৫ লিখলে সরাসরি আয়াতুল কুরসিতে যাবে।</span></li>
+        <li><span class="guide__ic"><i data-lucide="headphones"></i></span><b>তিলাওয়াত শুনুন</b><span>আয়াতের নিচে <em>শুনুন</em> চাপুন, বা <em>পুরো সূরা শুনুন</em>। ১২টি তিলাওয়াত থেকে পছন্দের ক্বারি বাছুন। যে শব্দ পড়া হচ্ছে, সেটি রঙিন হবে।</span></li>
+        <li><span class="guide__ic"><i data-lucide="book-text"></i></span><b>তাফসির পড়ুন</b><span>আয়াতের নিচে <em>তাফসির</em> চাপলে পাশে বিস্তারিত ব্যাখ্যা খুলবে। বাংলা, ইংরেজি আর আরবির ১১টি গ্রন্থ থেকে বদলে পড়তে পারবেন।</span></li>
+        <li><span class="guide__ic"><i data-lucide="bookmark"></i></span><b>সংরক্ষণ ও আবার শুরু</b><span>পছন্দের আয়াত সংরক্ষণ করুন। যেখানে থামবেন, পরেরবার পাতাটি সেখান থেকেই খুলবে। সব কিছু শুধু আপনার ফোনে বা কম্পিউটারে থাকে।</span></li>
+      </ol>
+      <button class="btn btn--solid btn--sm" type="button" id="guideOk"><i data-lucide="check"></i>বুঝেছি, পড়া শুরু করি</button>
+    </section>
     <div class="r-col" id="col"><p class="state">সূরা আনা হচ্ছে…</p></div>
   </main>
 
+  <!-- 5. tafsir: the ayah on top, the sources by language, the explanation in full -->
   <aside class="r-panel" id="panel" hidden aria-labelledby="panelH">
     <div class="panel-head">
+      <button class="icon-btn" type="button" id="panelPrev" aria-label="আগের আয়াতের তাফসির" title="আগের আয়াত"><i data-lucide="chevron-left"></i></button>
       <h2 id="panelH">তাফসির<small id="panelKey"></small></h2>
+      <button class="icon-btn" type="button" id="panelNext" aria-label="পরের আয়াতের তাফসির" title="পরের আয়াত"><i data-lucide="chevron-right"></i></button>
       <button class="icon-btn" type="button" id="panelClose" aria-label="তাফসির বন্ধ করুন"><i data-lucide="x"></i></button>
     </div>
-    <div class="panel-src">
-      <div class="dd" id="tafDd">
-        <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="তাফসির গ্রন্থ বাছাই">
-          <i data-lucide="book-text"></i><span class="dd-label"></span><i data-lucide="chevron-down" class="chev"></i>
-        </button>
-        <ul role="listbox" hidden id="tafList"></ul>
+    <div class="panel-scroll" id="panelScroll">
+      <div class="panel-ayah" id="panelAyah"></div>
+      <div class="panel-src">
+        <p class="panel-lbl" id="tafLbl">তাফসির গ্রন্থ</p>
+        <div class="taf-groups" id="tafGroups" role="radiogroup" aria-labelledby="tafLbl"></div>
       </div>
+      <article class="panel-body" id="panelBody"></article>
+      <p class="panel-note">তাফসিরের লেখা Quran.com থেকে, যেমন আছে তেমন। এটি আলেমদের ব্যাখ্যা, কুরআনের মূল লেখা নয়।</p>
     </div>
-    <div class="panel-body" id="panelBody"></div>
-    <p class="panel-note">তাফসিরের লেখা Quran.com থেকে, যেমন আছে তেমন। এটি আলেমদের ব্যাখ্যা, কুরআনের মূল লেখা নয়।</p>
   </aside>
 </div>
 <div class="scrim" id="scrim"></div>
 
-<div class="player" id="player" hidden aria-label="তিলাওয়াত">
-  <div class="p-progress" aria-hidden="true"><i id="pBar"></i></div>
-  <button class="icon-btn" type="button" id="pPrev" aria-label="আগের আয়াত"><i data-lucide="skip-back"></i></button>
-  <button class="icon-btn play-main" type="button" id="pPlay" aria-label="থামান"><i data-lucide="pause"></i></button>
-  <button class="icon-btn" type="button" id="pNext" aria-label="পরের আয়াত"><i data-lucide="skip-forward"></i></button>
-  <div class="p-info"><b id="pNow"></b><small id="pWho"></small></div>
-  <button class="icon-btn" type="button" id="pRepeat" aria-pressed="false" aria-label="এই আয়াত বারবার"><i data-lucide="repeat-1"></i></button>
-  <button class="icon-btn" type="button" id="pClose" aria-label="তিলাওয়াত বন্ধ করুন"><i data-lucide="x"></i></button>
+<!-- 6. the player: reciter, speed, repeat, keep going into the next surah -->
+<div class="player" id="player" hidden role="region" aria-label="তিলাওয়াত">
+  <div class="p-progress" id="pSeek" role="slider" tabindex="0" aria-label="তিলাওয়াতের অবস্থান" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="pBar"></i></div>
+  <div class="p-main">
+    <button class="icon-btn" type="button" id="pPrev" aria-label="আগের আয়াত"><i data-lucide="skip-back"></i></button>
+    <button class="icon-btn play-main" type="button" id="pPlay" aria-label="থামান"><i data-lucide="pause"></i></button>
+    <button class="icon-btn" type="button" id="pNext" aria-label="পরের আয়াত"><i data-lucide="skip-forward"></i></button>
+    <div class="p-info"><b id="pNow"></b><small id="pWho"></small></div>
+  </div>
+  <div class="p-opts">
+    <label class="pick pick--dark"><span class="sr">ক্বারি</span><select data-rec aria-label="ক্বারি বদলান"></select><i data-lucide="chevron-down"></i></label>
+    <label class="pick pick--dark pick--speed"><span class="sr">গতি</span><select id="pSpeed" aria-label="তিলাওয়াতের গতি">
+      <option value="0.75">০.৭৫×</option><option value="1">১×</option><option value="1.25">১.২৫×</option><option value="1.5">১.৫×</option></select><i data-lucide="chevron-down"></i></label>
+    <button class="icon-btn" type="button" id="pRepeat" aria-pressed="false" aria-label="এই আয়াত বারবার" title="এই আয়াত বারবার"><i data-lucide="repeat-1"></i></button>
+    <button class="icon-btn" type="button" id="pAuto" aria-pressed="false" aria-label="শেষে পরের সূরা চালু" title="শেষে পরের সূরা চালু"><i data-lucide="list-video"></i></button>
+    <button class="icon-btn" type="button" id="pClose" aria-label="তিলাওয়াত বন্ধ করুন"><i data-lucide="x"></i></button>
+  </div>
 </div>
 <audio id="audio" preload="none"></audio>
 </body>
